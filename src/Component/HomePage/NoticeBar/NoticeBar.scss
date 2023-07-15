@@ -1,0 +1,36 @@
+@keyframes marquee {
+  0% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.notice-bar {
+  .notice-swipe {
+    height: 45px;
+    margin-top: 15px;
+    font-size: 16px;
+    padding: 0 16px;
+    color: red;
+
+    .notice-bar__icon {
+      min-width: 30px;
+      display: inline-block;
+      position: relative;
+    }
+
+    .notice-bar__wrap {
+      -webkit-box-flex: 1;
+      flex: 1;
+      -webkit-box-align: center;
+
+      .notice-bar__content {
+        animation: marquee 30s linear infinite;
+        position: absolute;
+        white-space: nowrap;
+      }
+    }
+  }
+}
