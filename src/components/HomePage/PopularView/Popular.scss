@@ -1,0 +1,60 @@
+.popular {
+  background-color: #f2f2f5;
+
+  .popular-item {
+    width: calc(100% - 20px);
+    margin: 0 auto;
+
+    .swiper-slide {
+      width: 80%;
+      flex-shrink: 0;
+      transition-property: transform;
+
+      .movie_cover {
+        border-radius: 10px;
+        width: 90%;
+        height: auto;
+        padding-bottom: 50%;
+
+        .movie-image {
+          -o-object-fit: cover;
+          object-fit: cover;
+          top: 0;
+          left: 0;
+          border-radius: 10px;
+        }
+      }
+
+      .hot {
+        width: 45px;
+        top: 0;
+        left: 0;
+      }
+
+      .movie-title__container {
+        width: 90%;
+        bottom: 38px;
+
+        .movie-title__wrap {
+          background-color: rgba(0, 0, 0, .4);
+          padding: 5px 0;
+          border-radius: 0 0 10px 10px;
+
+          .movie-title {
+            overflow: hidden;
+            white-space: nowrap;
+            width: 60%;
+            padding-left: 10px;
+            font-size: 14px;
+          }
+
+          .movie-count-down {
+            font-size: 14px;
+            padding-right: 3px;
+            line-height: 20px;
+          }
+        }
+      }
+    }
+  }
+}

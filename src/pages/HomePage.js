@@ -3,9 +3,12 @@ import {useEffect} from "react";
 import {Link, Route, Routes} from "react-router-dom";
 import {useLocation, useNavigate} from "react-router-dom";
 import "./HomePage.scss"
-import Banner from "../Component/HomePage/Banner/Banner";
-import NoticeBar from "../Component/HomePage/NoticeBar/NoticeBar";
-import HotGame from "../Component/HomePage/HotGame/HotGame";
+import Banner from "../components/HomePage/BannerView/Banner";
+import NoticeBar from "../components/HomePage/NoticeBarView/NoticeBar";
+import HotGame from "../components/HomePage/HotGameView/HotGame";
+import Popular from "../components/HomePage/PopularView/Popular"
+import Recommend from "../components/HomePage/RecommendView/Recommend";
+
 export default function HomePage() {
     //   const navigation = useNavigate();
     //   let a = 0;
@@ -21,5 +24,9 @@ export default function HomePage() {
         <NoticeBar/>
 
         <HotGame/>
+
+        <Popular/>
+
+        <Recommend/>
     </>);
 }

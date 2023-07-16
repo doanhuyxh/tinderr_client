@@ -1,22 +1,3 @@
-.notice-bar {
-  background-color: #fffbe8;
-}
-
-.game_item_img{
-  width: 60px;
-  height: 60px;
-}
-
-.van-image__img {
-  border-radius: 20px;
-}
-
-.linear-gradient {
-  width: 100%;
-  height: 2px;
-  background: linear-gradient(90deg,rgba(126,86,120,0),#ef42cd,rgba(126,86,120,0));
-}
-
 .title {
   &:before {
     content: "";
@@ -28,10 +9,18 @@
     margin-right: 5px;
   }
 }
-  .hot-title {
-    width: calc(100% - 20px);
-    margin: 0 auto;
-    height: 50px;
-  }
 
+.read-more {
+  color: #979799;
+  font-size: 14px;
+}
 
+.hot-title-div {
+  width: calc(100% - 20px);
+  margin: 0 auto;
+  height: 50px;
+}
+
+.fz-15px {
+  font-size: 15px;
+}

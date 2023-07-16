@@ -1,0 +1,20 @@
+.hot-game {
+  .hot-item {
+    .hot-item__container {
+      padding: 16px 8px;
+
+      .hot-item__wrap {
+        width: 60px;
+        height: 60px;
+
+        .hot-item__img {
+          border-radius: 20px;
+        }
+      }
+
+      .hot-item__title {
+        font-size: 14px;
+      }
+    }
+  }
+}
