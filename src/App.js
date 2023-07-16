@@ -7,6 +7,7 @@ import RegisterPage from "./pages/RegisterPage";
 import VideoPage from "./pages/VideoPage";
 import GirlsPage from "./pages/GirlsPage";
 import Footer from "./pages/Footer";
+import VotingHallPage from "./pages/VotingHallPage";
 
 function App() {
 
@@ -19,7 +20,7 @@ function App() {
                     <Route path="/profile" element={<ProfilePage/>}/>
                     <Route path="/register" element={<RegisterPage/>}/>
                     <Route path="/video" element={<VideoPage/>}/>
-                    <Route path="/votingHall" element={<VideoPage/>}/>
+                    <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/girls" element={<GirlsPage/>}/>
                 </Routes>
             </div>
