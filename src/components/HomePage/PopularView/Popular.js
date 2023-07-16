@@ -47,7 +47,7 @@ export default function Popular() {
                     className="mySwiper">
                     {data.map((item, index) => ( // Sử dụng data từ state
                         <SwiperSlide key={index} className="swiper-slide h-100 position-relative">
-                            <Link to="/xyz">
+                            <Link to="/xyz" className="text-decoration-none">
                                 <div className="movie_cover position-relative d-inline-block">
                                     <img
                                         className="movie-image w-100 h-100 position-absolute d-block"
