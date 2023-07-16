@@ -47,22 +47,25 @@ export default function Popular() {
                     className="mySwiper">
                     {data.map((item, index) => ( // Sử dụng data từ state
                         <SwiperSlide key={index} className="swiper-slide h-100 position-relative">
-                            <div className="movie_cover position-relative d-inline-block">
-                                <img
-                                    className="movie-image w-100 h-100 position-absolute d-block"
-                                    src={item.imgAvatarPath} // Sử dụng imgAvatarPath từ dữ liệu API
-                                    alt={item.videoName} // Sử dụng videoName từ dữ liệu API
-                                />
-                            </div>
-                            <img src={index === 0 ? no1 : index === 1 ? no2 : index === 2 ? no3 : ""} className="hot position-absolute"
-                                 alt=""></img>
-                            <div className="movie-title__container position-relative">
-                                <div
-                                    className="movie-title__wrap w-100 d-flex align-items-center justify-content-between text-white">
-                                    <span className="movie-title">{item.videoName}</span>
-                                    <div className="movie-count-down">00:18:11</div>
+                            <Link to="/xyz">
+                                <div className="movie_cover position-relative d-inline-block">
+                                    <img
+                                        className="movie-image w-100 h-100 position-absolute d-block"
+                                        src={item.imgAvatarPath} // Sử dụng imgAvatarPath từ dữ liệu API
+                                        alt={item.videoName} // Sử dụng videoName từ dữ liệu API
+                                    />
                                 </div>
-                            </div>
+                                <img src={index === 0 ? no1 : index === 1 ? no2 : index === 2 ? no3 : ""}
+                                     className="hot position-absolute"
+                                     alt=""></img>
+                                <div className="movie-title__container position-relative">
+                                    <div
+                                        className="movie-title__wrap w-100 d-flex align-items-center justify-content-between text-white">
+                                        <span className="movie-title">{item.videoName}</span>
+                                        <div className="movie-count-down">00:18:11</div>
+                                    </div>
+                                </div>
+                            </Link>
                         </SwiperSlide>
                     ))}
                 </Swiper>

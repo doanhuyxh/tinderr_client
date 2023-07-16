@@ -36,7 +36,7 @@ export default function Recommend() {
                 <div className="movie-list__container">
                     {/*Item 1*/}
                     {data.map((item, index) => (
-                        <div key={index} className="movie-list__item position-relative">
+                        <Link to="/abc" key={index} className="movie-list__item position-relative">
                             <div className="movie_cover position-relative d-inline-block">
                                 <img
                                     className="movie-image w-100 h-100 position-absolute d-block"
@@ -49,7 +49,7 @@ export default function Recommend() {
                                     <span className="movie-count-down">Xem: 184</span>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
 
