@@ -5,6 +5,7 @@ import icHome from '../images/ic-home-act.jpg';
 import icFilm from '../images/ic-film.jpg';
 import icClock from '../images/ic-clock.jpg';
 import icUser from '../images/ic-user.jpg';
+import iconGirl from '../images/icon.png'
 
 export default function Footer() {
     return (<>
@@ -25,10 +26,9 @@ export default function Footer() {
                 </Link>
                 <Link to="/girls" className="d-flex flex-column align-items-center navbar-bottom__link">
                     <div className="navbar-bottom__icon">
-                        <img src={icHome}
+                        <img src={iconGirl}
                              alt="Trang chủ"></img>
                     </div>
-                    <div className="navbar-bottom__text"><span>Girl</span></div>
                 </Link>
                 <Link to="/video" className="d-flex flex-column align-items-center navbar-bottom__link">
                     <div className="navbar-bottom__icon">
