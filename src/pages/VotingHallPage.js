@@ -1,6 +1,7 @@
 import * as React from "react";
 import "./VotingHallPage.scss"
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 export default function VotingHallPage() {
 
@@ -9,13 +10,16 @@ export default function VotingHallPage() {
     function showHistory() {
         setIsShow(!isShow);
     }
+
     let classNames = `popup ${isShow ? 'showModal' : ''}`;
+
     return (<>
         <div className="convention-hall">
-            <div className="nav-bar position-relative text-center">
-                <div className="nav-bar__content">
-                    <div className="nav-bar__title">Sảnh Bình Chọn</div>
-                </div>
+            <div className="nav-bar">
+                <Link to="/" className="nav-bar__left ">
+                    <i className="fa-solid fa-chevron-left"></i>
+                </Link>
+                <div className="nav-bar__content">Sảnh Bình Chọn</div>
             </div>
 
             <div className="record">
