@@ -12,7 +12,6 @@ import anh4 from '../../../images/anh4.jpg';
 import anh5 from '../../../images/anh5.jpg';
 import anh6 from '../../../images/anh6.jpg';
 
-
 export default function Banner() {
     return (<>
         <div className="banner">

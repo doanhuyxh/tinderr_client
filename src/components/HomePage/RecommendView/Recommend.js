@@ -1,22 +1,30 @@
 import * as React from "react";
 import "./Recommend.scss"
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 
 export default function Recommend() {
-    const [data, setData] = React.useState([]); // Khởi tạo state
+    const navigate = useNavigate();
+    const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        // Gọi API trong useEffect
-        axios.get("/api/MobileAPI/videoHome")
-            .then(res => {
-                console.log(res.data.data);
-                setData(res.data.data); // Cập nhật state với dữ liệu trả về
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        axios
+            .get("/api/MobileAPI/videoHome")
+            .then((response) => {
+                setData(response.data.data);
             })
-            .catch(e => {
-                console.log(e);
+            .catch((error) => {
+                console.log(error);
             });
-    }, []); // Thêm một mảng dependency rỗng để chạy useEffect chỉ một lần sau khi component được render
+    };
+
+    const handleClick = (itemId) => {
+        navigate(`/watch/${itemId}`);
+    };
 
     return (<>
         <div className="recommend">
@@ -36,7 +44,7 @@ export default function Recommend() {
                 <div className="movie-list__container">
                     {/*Item 1*/}
                     {data.map((item, index) => (
-                        <Link to="/abc" key={index} className="movie-list__item position-relative">
+                        <div key={index} className="movie-list__item position-relative" onClick={() => handleClick(item.id)}>
                             <div className="movie_cover position-relative d-inline-block">
                                 <img
                                     className="movie-image w-100 h-100 position-absolute d-block"
@@ -49,11 +57,13 @@ export default function Recommend() {
                                     <span className="movie-count-down">Xem: 184</span>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
 
-                <div className="read-more text-center fz-15px p-3">Xem thêm</div>
+                <Link to="/profile" className="text-center nav-link read-more p-3">
+                    <span>Xem thêm</span>
+                </Link>
             </div>
         </div>
     </>);

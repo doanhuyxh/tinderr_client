@@ -1,5 +1,4 @@
 import * as React from "react";
-import axios from "axios";
 import {useEffect} from "react";
 import {Link, Route, Routes} from "react-router-dom";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -20,14 +19,16 @@ export default function HomePage() {
     //   }, [a]);
 
     return (<>
-        <Banner/>
+        <div style={{marginBottom: 76}}>
+            <Banner/>
 
-        <NoticeBar/>
+            <NoticeBar/>
 
-        <HotGame/>
+            <HotGame/>
 
-        <Popular/>
+            <Popular/>
 
-        <Recommend/>
+            <Recommend/>
+        </div>
     </>);
 }

@@ -8,12 +8,13 @@ import VideoPage from "./pages/VideoPage";
 import GirlsPage from "./pages/GirlsPage";
 import Footer from "./pages/Footer";
 import VotingHallPage from "./pages/VotingHallPage";
+import WatchPage from "./components/WatchPage/WatchPage";
 
 function App() {
 
     return (
         <>
-            <div className="mb-76px">
+            <div>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>
                     <Route path="/login" element={<LoginPage/>}/>
@@ -22,6 +23,7 @@ function App() {
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/girls" element={<GirlsPage/>}/>
+                    <Route path="/watch/:itemId" element={<WatchPage />} />
                 </Routes>
             </div>
 

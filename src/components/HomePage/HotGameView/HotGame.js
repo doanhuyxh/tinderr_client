@@ -15,7 +15,7 @@ export default function HotGame() {
                         <span className="m-0 title d-flex"><b>Đề xuất</b></span>
                     </div>
                     <div>
-                        <Link to="/profile" className="d-flex align-items-center nav-link read-more">
+                        <Link to="/votingHall" className="d-flex align-items-center nav-link read-more">
                             Xem thêm
                             <i className="fa-solid fa-angle-right ms-1"></i>
                         </Link>

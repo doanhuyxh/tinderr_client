@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import './Popular.scss'
 import {Swiper, SwiperSlide} from 'swiper/react';
 import 'swiper/css';
@@ -11,19 +11,27 @@ import no3 from '../../../images/no3.png';
 import axios from "axios";
 
 export default function Popular() {
-    const [data, setData] = React.useState([]); // Khởi tạo state
+    const navigate = useNavigate();
+    const [data, setData] = React.useState([]);
 
     React.useEffect(() => {
-        // Gọi API trong useEffect
-        axios.get("/api/MobileAPI/videoHome")
-            .then(res => {
-                console.log(res.data.data);
-                setData(res.data.data); // Cập nhật state với dữ liệu trả về
+        fetchData();
+    }, []);
+
+    const fetchData = () => {
+        axios
+            .get("/api/MobileAPI/videoHome")
+            .then((response) => {
+                setData(response.data.data);
             })
-            .catch(e => {
-                console.log(e);
+            .catch((error) => {
+                console.log(error);
             });
-    }, []); // Thêm một mảng dependency rỗng để chạy useEffect chỉ một lần sau khi component được render
+    };
+
+    const handleClick = (itemId) => {
+        navigate(`/watch/${itemId}`);
+    };
 
     return (<>
         <div className="popular">
@@ -47,7 +55,7 @@ export default function Popular() {
                     className="mySwiper">
                     {data.map((item, index) => ( // Sử dụng data từ state
                         <SwiperSlide key={index} className="swiper-slide h-100 position-relative">
-                            <Link to="/xyz" className="text-decoration-none">
+                            <div onClick={() => handleClick(item.id)}>
                                 <div className="movie_cover position-relative d-inline-block">
                                     <img
                                         className="movie-image w-100 h-100 position-absolute d-block"
@@ -65,9 +73,8 @@ export default function Popular() {
                                         <div className="movie-count-down">00:18:11</div>
                                     </div>
                                 </div>
-                            </Link>
-                        </SwiperSlide>
-                    ))}
+                            </div>
+                        </SwiperSlide>))}
                 </Swiper>
             </div>
         </div>
