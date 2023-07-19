@@ -26,7 +26,7 @@ export default function WatchPage({navigate}) {
 
     return (
         <div className="watch-page">
-            <ReactPlayer url={base64} controls={true}/>
+            <ReactPlayer width='100%' url={base64} controls={true}/>
         </div>
     );
 }

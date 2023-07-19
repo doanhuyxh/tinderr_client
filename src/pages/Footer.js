@@ -1,6 +1,6 @@
 import * as React from "react";
 import "./Footer.scss"
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import icHome from '../images/ic-home-act.jpg';
 import icFilm from '../images/ic-film.jpg';
 import icClock from '../images/ic-clock.jpg';
@@ -8,6 +8,13 @@ import icUser from '../images/ic-user.jpg';
 import iconGirl from '../images/icon.png'
 
 export default function Footer() {
+    const location = useLocation();
+
+    // Don't render the Footer if we're on the GirlsPage.
+    if (location.pathname === '/girls') {
+        return null;
+    }
+
     return (<>
             <nav className="navbar-bottom d-flex w-100 bg-white position-fixed">
                 <Link to="/" className="d-flex flex-column align-items-center navbar-bottom__link">
