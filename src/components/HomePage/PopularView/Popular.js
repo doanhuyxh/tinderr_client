@@ -8,7 +8,7 @@ import {Pagination} from 'swiper/modules';
 import no1 from '../../../images/no1.png';
 import no2 from '../../../images/no2.png';
 import no3 from '../../../images/no3.png';
-import axios from "axios";
+import axios from "../../../Axios";
 
 export default function Popular() {
     const navigate = useNavigate();
