@@ -2,42 +2,48 @@ import * as React from "react";
 import {Link} from "react-router-dom";
 import "./GirlsPage.scss"
 import * as signalR from '@microsoft/signalr';
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 
-var user = Math.random().toFixed(2)*100
+var user3 = Math.random().toFixed(2) * 100
 
 if (!localStorage.getItem('user')) {
     // Set the 'user' key in localStorage only if it doesn't already exist
-    localStorage.setItem('user', user);
+    localStorage.setItem('user', user3);
 }
 
-localStorage.setItem("user", user);
+localStorage.setItem("user", user3);
 
 export default function GirlsPage() {
-    var hubConnection;
-    const [messages, setMessages] = useState([]);
+
+
+    const [messages, setMessages] = useState("");
+
+    const [listMes, setListMes] = useState([])
+
+    const [hubConnection, setHubConnection] = useState(null);
     let user1 = localStorage.getItem("user");
+
     useEffect(() => {
 
         console.log(user1)
         const startConnection = async () => {
             try {
                 // Create a connection to the SignalR Hub
-                hubConnection = new signalR.HubConnectionBuilder()
+                let connection = new signalR.HubConnectionBuilder()
                     .withUrl('https://localhost:44349/chatHub')
                     .build();
 
                 // Start the connection
-                await hubConnection.start();
+                await connection.start();
                 console.log('SignalR connected');
 
-                // Invoke the SendMessage method after the connection is established
-                hubConnection.invoke('SendMessage', user1, 'Xin chào admin');
+                connection.on("ReceiveMessageToUser", function (user, message, adminChat) {
+                    setListMes((prevListMes) => [...prevListMes, {user, message}]);
+                    console.log("message return", listMes);
+                })
 
-                // Set up event listeners for receiving messages from the server
-                hubConnection.on('ReceiveMessage', (user, message) => {
-                    setMessages((prevMessages) => [...prevMessages, { user, message }]);
-                });
+                setHubConnection(connection);
+
             } catch (error) {
                 console.log('Error while connecting to SignalR:', error);
             }
@@ -53,8 +59,13 @@ export default function GirlsPage() {
         };
     }, []);
 
-    const handleMessage = () => {
-        this.hubConnection.invoke('SendMessage', user1, messages);
+    const valueChatRef = useRef(null);
+    const handleMessage = async () => {
+        try {
+            let res = await hubConnection.invoke('SendMessage', user1, valueChatRef.current.value);
+        } catch (e) {
+            console.log("Exxx", e)
+        }
     }
 
     const handChange = (event) => {
@@ -76,13 +87,21 @@ export default function GirlsPage() {
                 <div className="chat-screen">
                     <div className="chat-body">
                         <div className="chat-start">Monday, 1:27 PM</div>
-                        {/*<div className="chat-bubble me">Welcome to our site, if you need help simply reply to this*/}
-                        {/*    message, we are online and ready to help.*/}
-                        {/*</div>*/}
-                        <div className="chat-bubble you">Chăm sóc khách hàng</div>
+
+                        <div className="chat-bubble you float-end">Chăm sóc khách hàng</div>
+                        {
+                            listMes.map((item, index) => {
+                                if (item.user == user1) {
+                                    return (<div className="chat-bubble you float-end" key={index}>{item.message}</div>)
+                                } else {
+                                    return (<div className="chat-bubble you" key={index}>{item.message}</div>)
+                                }
+                            })
+                        }
+
                     </div>
                     <div className="chat-input">
-                        <input type="text" placeholder="Type a message..." onChange={handChange}/>
+                        <input type="text" placeholder="Type a message..." ref={valueChatRef}/>
                         <div className="input-action-icon">
                             <a>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
