@@ -11,7 +11,7 @@ export default function Footer() {
     const location = useLocation();
 
     // Don't render the Footer if we're on the GirlsPage.
-    if (location.pathname === '/girls') {
+    if (location.pathname === '/girls' || location.pathname === '/votingHall') {
         return null;
     }
 
@@ -36,6 +36,7 @@ export default function Footer() {
                         <img src={iconGirl}
                              alt="Trang chủ"></img>
                     </div>
+                    <div className="navbar-bottom__text"><span>Chat</span></div>
                 </Link>
                 <Link to="/video" className="d-flex flex-column align-items-center navbar-bottom__link">
                     <div className="navbar-bottom__icon">

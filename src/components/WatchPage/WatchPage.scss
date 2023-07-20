@@ -1,0 +1,202 @@
+.watch-page {
+
+  .video {
+    position: sticky;
+    top: 0;
+    z-index: 9;
+  }
+
+  .related-movies {
+    color: #a5a5a5;
+    font-size: 14px;
+    line-height: 1.6;
+    box-sizing: border-box;
+    display: block;
+    background: #000;
+    height: 100vh;
+
+    .wrap-slider {
+      color: #a5a5a5;
+      font-size: 14px;
+      line-height: 1.6;
+      box-sizing: border-box;
+      position: relative;
+      overflow: hidden;
+      margin: 0;
+
+      .section-bar {
+        color: #a5a5a5;
+        font-size: 14px;
+        line-height: 1.6;
+        box-sizing: border-box;
+        position: relative;
+        margin: 15px 0;
+
+        .section-title {
+          box-sizing: border-box;
+          font-family: inherit;
+          color: inherit;
+          font-weight: 700;
+          font-size: 16px;
+          line-height: 11px;
+          display: block;
+          margin: 13px 0 10px;
+          position: relative;
+          text-transform: uppercase;
+          border-top: 1px solid rgba(255,255,255,.08);
+
+          span {
+            font-family: inherit;
+            line-height: 11px;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            font-weight: normal;
+            float: left;
+            margin-top: -15px;
+            border: 1px solid rgba(255,255,255,.08);
+            background: rgb(10, 10, 10);
+            font-size: 13px;
+            padding: 10px 15px 7px;
+            color: #fff;
+            position: relative;
+          }
+        }
+      }
+
+      .dp_box {
+        color: #a5a5a5;
+        font-size: 14px;
+        line-height: 1.6;
+        box-sizing: border-box;
+        list-style: none;
+        padding: 0;
+        margin: 10px -4px 20px;
+        display: block;
+
+        .grid-item {
+          color: #a5a5a5;
+          font-size: 14px;
+          line-height: 1.6;
+          list-style: none;
+          box-sizing: border-box;
+          min-height: 1px;
+          float: left;
+          width: 50%;
+          position: relative;
+          padding: 10px;
+          margin-bottom: 20px;
+
+          .dp-item {
+            color: #a5a5a5;
+            font-size: 14px;
+            list-style: none;
+            box-sizing: border-box;
+            display: block;
+            position: relative;
+            line-height: 0;
+
+            .dp-thumb {
+              list-style: none;
+              line-height: 0;
+              box-sizing: border-box;
+              background-color: transparent;
+              text-decoration: none;
+              color: #dbdbdb;
+              font-size: 13px;
+              position: relative;
+              display: inline-block;
+              transition: all .7s ease;
+              width: 100%;
+
+              .lazy {
+                list-style: none;
+                line-height: 0;
+                color: #dbdbdb;
+                font-size: 13px;
+                font-family: 'arial', sans-serif;
+                aspect-ratio: auto 277 / 152;
+                box-sizing: border-box;
+                border: 0;
+                max-width: 100%;
+                height: auto;
+                vertical-align: middle;
+                width: 100%;
+                transition: all .3s ease-in-out;
+              }
+
+              .icon_overlay {
+                list-style: none;
+                line-height: 0;
+                color: #dbdbdb;
+                font-size: 13px;
+                font-family: 'arial', sans-serif;
+                box-sizing: border-box;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(to bottom right, rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+                opacity: 0;
+                transition: opacity .5s ease-in-out;
+                position: relative;
+                display: inline-block;
+              }
+            }
+
+            .dp-post-title-box {
+              color: #a5a5a5;
+              font-size: 14px;
+              list-style: none;
+              box-sizing: border-box;
+              line-height: 18px;
+              padding: 0;
+              margin: 0;
+              width: 100%;
+              height: 40px;
+              bottom: 0;
+              background: linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(6, 6, 6, 0) 30%,rgba(0,0,0,0) 100%);
+
+              .dp-post-title {
+                color: #a5a5a5;
+                font-size: 14px;
+                list-style: none;
+                box-sizing: border-box;
+                position: absolute;
+                line-height: 18px;
+                margin: auto;
+                width: 100%;
+                text-align: center;
+
+                .entry-title {
+                  list-style: none;
+                  text-align: center;
+                  box-sizing: border-box;
+                  font-family: inherit;
+                  color: inherit;
+                  line-height: 19px;
+                  height: 40px;
+                  overflow: hidden;
+                  font-size: 9px !important;
+                  font-weight: bold;
+                  margin: 0 4px;
+
+                  a {
+                    list-style: none;
+                    text-align: center;
+                    line-height: 19px;
+                    font-weight: bold;
+                    box-sizing: border-box;
+                    background-color: transparent;
+                    text-decoration: none;
+                    color: #dbdbdb;
+                    font-size: 13px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
