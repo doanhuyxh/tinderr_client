@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const instance = axios.create({
-    baseURL: "http://scammer.click:83",
+    baseURL: "http://server.tinderr.id.vn",
     //withCredentials: true
 });
 export default instance;
