@@ -20,6 +20,7 @@ function App() {
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/profile" element={<ProfilePage/>}/>
                     <Route path="/register" element={<RegisterPage/>}/>
+                    <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/girls" element={<GirlsPage/>}/>
