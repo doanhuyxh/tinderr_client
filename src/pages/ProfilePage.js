@@ -26,9 +26,10 @@ export default function ProfilePage() {
                     <div className="info-item">
                         <strong>Số điện thoại: </strong> {user.phone}
                     </div>
-                </div>
-                <div className="qr-code">
-                    <p>Đây là vị trí của mã QR</p>
+                    <div className="info-item">
+                        <strong>Số tài khoản: </strong> {user.phone} - MB
+                    </div>
+
                 </div>
             </div>
         </div>
