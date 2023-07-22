@@ -33,7 +33,7 @@ export default function Recommend() {
                     <span className="m-0 title d-flex"><b>Đề xuất</b></span>
                 </div>
                 <div>
-                    <Link to="/profile" className="d-flex align-items-center nav-link read-more">
+                    <Link to="/video" className="d-flex align-items-center nav-link read-more">
                         Xem thêm
                         <i className="fa-solid fa-angle-right ms-1"></i>
                     </Link>
@@ -61,7 +61,7 @@ export default function Recommend() {
                     ))}
                 </div>
 
-                <Link to="/profile" className="text-center nav-link read-more p-3">
+                <Link to="/video" className="text-center nav-link read-more p-3">
                     <span>Xem thêm</span>
                 </Link>
             </div>

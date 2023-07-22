@@ -40,7 +40,7 @@ export default function Popular() {
                     <span className="m-0 title d-flex"><b>Phổ biến</b></span>
                 </div>
                 <div>
-                    <Link to="/profile" className="d-flex align-items-center nav-link read-more">
+                    <Link to="/video" className="d-flex align-items-center nav-link read-more">
                         Xem thêm
                         <i className="fa-solid fa-angle-right ms-1"></i>
                     </Link>
