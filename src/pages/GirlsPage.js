@@ -73,10 +73,9 @@ export default function GirlsPage() {
     }
 
     return (<>
-
             <div className="chat">
                 <div className="nav-bar">
-                    <Link to="/" className="nav-bar__left">
+                    <Link to="/chat" className="nav-bar__left">
                         <i className="fa-solid fa-chevron-left"></i>
                     </Link>
                     <div className="nav-bar__content">

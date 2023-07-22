@@ -31,7 +31,7 @@ export default function Footer() {
                     </div>
                     <div className="navbar-bottom__text"><span>Sảnh bình chọn</span></div>
                 </Link>
-                <Link to="/girls" className="d-flex flex-column align-items-center navbar-bottom__link">
+                <Link to="/chat" className="d-flex flex-column align-items-center navbar-bottom__link">
                     <div className="navbar-bottom__icon">
                         <img src={iconGirl}
                              alt="Trang chủ"></img>

@@ -9,6 +9,7 @@ import GirlsPage from "./pages/GirlsPage";
 import Footer from "./pages/Footer";
 import VotingHallPage from "./pages/VotingHallPage";
 import WatchPage from "./components/WatchPage/WatchPage";
+import ChatPage from "./pages/ChatPage";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/girls" element={<GirlsPage/>}/>
+                    <Route path="/chat" element={<ChatPage/>}/>
                     <Route path="/watch/:itemId" element={<WatchPage />} />
                 </Routes>
             </div>
