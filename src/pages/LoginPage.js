@@ -12,20 +12,17 @@ export default function LoginPage() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Call login API
         axios
             .post("/api/MobileAPI/login", { username, password })
             .then((response) => {
-                // Login successful, navigate to another page
-                // This depends on your API's response structure
-                if (response.data.success) {
+                if (response.data.isSuccess) {
+                    localStorage.setItem('userData', JSON.stringify(response.data.data));
                     navigate(`/`);
                 } else {
                     setError(response.data.message || 'Unknown error');
                 }
             })
             .catch((error) => {
-                // Handle error during API call
                 setError(error.message);
             });
     };

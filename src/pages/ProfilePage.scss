@@ -11,7 +11,7 @@
 
     .profile-header {
       display: flex;
-      justify-content: space-between;
+      justify-content: end;
       align-items: center;
 
       h1 {
@@ -20,19 +20,23 @@
         font-size: 2em;
       }
 
-      button {
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        background: linear-gradient(to right, #f90, #f42);
-        color: #fff;
-        cursor: pointer;
-        transition: background .3s;
+    }
 
-        &:hover {
-          background: linear-gradient(to right, #f42, #f90);
-        }
-      }
+    .profile-footer {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    button {
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background: linear-gradient(90deg, #8774d3, #ef42cd);
+      color: #fff;
+      cursor: pointer;
+      transition: background .3s;
     }
 
     .profile-info {
