@@ -13,7 +13,7 @@ export default function LoginPage() {
         event.preventDefault();
 
         axios
-            .post("/api/MobileAPI/login", { username, password })
+            .post("/api/MobileAPI/login", {username, password})
             .then((response) => {
                 if (response.data.isSuccess) {
                     localStorage.setItem('userData', JSON.stringify(response.data.data));
@@ -27,23 +27,25 @@ export default function LoginPage() {
             });
     };
 
-    return (
-        <div className="login-page">
-            <div className="login-form">
-                <h2>Login</h2>
-                {error && <p>{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <div className="input-field">
-                        <input type="text" required id="username" value={username} onChange={e => setUsername(e.target.value)} />
-                        <label htmlFor="username">Username</label>
-                    </div>
-                    <div className="input-field">
-                        <input type="password" required id="password" value={password} onChange={e => setPassword(e.target.value)} />
-                        <label htmlFor="password">Password</label>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
+    return (<>
+            <div className="login-page">
+                <div className="login-form">
+                    <h2>Login</h2>
+                    {error && <p>{error}</p>}
+                    <form onSubmit={handleSubmit}>
+                        <div className="input-field">
+                            <input type="text" required id="username" value={username}
+                                   onChange={e => setUsername(e.target.value)}/>
+                            <label htmlFor="username">Username</label>
+                        </div>
+                        <div className="input-field">
+                            <input type="password" required id="password" value={password}
+                                   onChange={e => setPassword(e.target.value)}/>
+                            <label htmlFor="password">Password</label>
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
             </div>
-        </div>
-    );
+        </>);
 }

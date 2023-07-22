@@ -31,11 +31,9 @@ export default function RegisterPage() {
         let passwordHash = password;
         let userName = username;
         fetch("http://server.tinderr.id.vn/api/MobileAPI/register", {
-            method: 'POST',
-            headers: {
+            method: 'POST', headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userName, passwordHash, inviteCode, ip }),
+            }, body: JSON.stringify({userName, passwordHash, inviteCode, ip}),
         })
             .then(response => response.json())
             .then(data => {
@@ -50,31 +48,35 @@ export default function RegisterPage() {
             });
     };
 
-    return (
+    return (<>
         <div className="register-page">
             <div className="register-form">
                 <h2>Register</h2>
                 {error && <p>{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="input-field">
-                        <input type="text" required id="username" value={username} onChange={e => setUsername(e.target.value)}/>
+                        <input type="text" required id="username" value={username}
+                               onChange={e => setUsername(e.target.value)}/>
                         <label htmlFor="username">Username</label>
                     </div>
                     <div className="input-field">
-                        <input type="password" required id="password" value={password} onChange={e => setPassword(e.target.value)}/>
+                        <input type="password" required id="password" value={password}
+                               onChange={e => setPassword(e.target.value)}/>
                         <label htmlFor="password">Password</label>
                     </div>
                     <div className="input-field">
-                        <input type="password" required id="re-password" value={rePassword} onChange={e => setRePassword(e.target.value)}/>
+                        <input type="password" required id="re-password" value={rePassword}
+                               onChange={e => setRePassword(e.target.value)}/>
                         <label htmlFor="re-password">Re-Enter the password</label>
                     </div>
                     <div className="input-field">
-                        <input type="text" required id="invite-code" value={inviteCode} onChange={e => setInviteCode(e.target.value)}/>
+                        <input type="text" required id="invite-code" value={inviteCode}
+                               onChange={e => setInviteCode(e.target.value)}/>
                         <label htmlFor="invite-code">Invite Code</label>
                     </div>
                     <button type="submit">Register</button>
                 </form>
             </div>
         </div>
-    );
+    </>);
 }
