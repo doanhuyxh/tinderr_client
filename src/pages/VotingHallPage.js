@@ -50,10 +50,10 @@ export default function VotingHallPage() {
                     <div className="game">
                         <div className="tips">
                             <p className="odds m-0">【Bình chọn 1】</p>
-                            <div className="play-tip">
-                                <i className="fa-solid fa-circle-info icon"></i>
+                            <Link to="/history" className="play-tip">
+                                <i className="fa-solid fa-clock-rotate-left icon"></i>
                                 <span className="span-text">Lịch sử</span>
-                            </div>
+                            </Link>
                         </div>
                         <div className="linear-gradient"></div>
                         <div className="sumValueTwoSides">

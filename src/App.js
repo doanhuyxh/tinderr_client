@@ -10,6 +10,7 @@ import Footer from "./pages/Footer";
 import VotingHallPage from "./pages/VotingHallPage";
 import WatchPage from "./components/WatchPage/WatchPage";
 import ChatPage from "./pages/ChatPage";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
 
@@ -24,6 +25,7 @@ function App() {
                     <Route path="/login" element={<LoginPage/>}/>
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
+                    <Route path="/history" element={<HistoryPage/>}/>
                     <Route path="/girls" element={<GirlsPage/>}/>
                     <Route path="/chat" element={<ChatPage/>}/>
                     <Route path="/watch/:itemId" element={<WatchPage />} />
