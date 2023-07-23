@@ -1,7 +1,8 @@
 import * as React from "react";
 import "./VotingHallPage.scss"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import * as signalR from "@microsoft/signalr";
 
 export default function VotingHallPage() {
 
@@ -10,6 +11,42 @@ export default function VotingHallPage() {
     function showHistory() {
         setIsShow(!isShow);
     }
+
+    const [hubConnection, setHubConnection] = useState(null);
+    useEffect(() => {
+        const startConnection = async () => {
+            try {
+                // Create a connection to the SignalR Hub
+                let connection = new signalR.HubConnectionBuilder()
+                    .withUrl('https://localhost:44349/gameHub')
+                    .build();
+                // Start the connection
+                await connection.start();
+                setHubConnection(connection);
+
+                console.log('SignalR connected');
+
+                connection.invoke("JoinRandomGame")
+
+                connection.on("GameStarted", function (mes){
+                    alert(mes)
+                })
+
+
+            } catch (error) {
+                console.log('Error while connecting to SignalR:', error);
+            }
+        };
+
+        startConnection();
+
+        return () => {
+            // Clean up the connection when the component unmounts
+            if (hubConnection) {
+                hubConnection.stop();
+            }
+        };
+    }, []);
 
     let classNames = `popup ${isShow ? 'showModal' : ''}`;
 
