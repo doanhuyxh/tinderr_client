@@ -18,7 +18,9 @@ export default function GirlsPage() {
         connection.start()
             .then(() => {
                 console.log('SignalR connected');
-                connection.invoke("HistoryChat", userClient).then(r => {console.log("r", r)});
+                connection.invoke("HistoryChat", userClient).then(r => {
+                    console.log("r", r)
+                });
             })
             .catch(error => {
                 console.log('Error while connecting to SignalR:', error);
@@ -33,9 +35,9 @@ export default function GirlsPage() {
             setMessages((prevListMes) => [...prevListMes, {adminChat, message}]);
         })
 
-        connection.on("ReceiveMessageHistoryToUser", function (user, history){
+        connection.on("ReceiveMessageHistoryToUser", function (user, history) {
             setMessages([]);
-            history.forEach((item, index)=>{
+            history.forEach((item, index) => {
                 const newMessages = history.map((item, index) => ({
                     key: index,
                     user: item.fromUser,
@@ -58,8 +60,15 @@ export default function GirlsPage() {
         };
     }, []);
 
-    const handleMessage = async ()=>{
+    const handleMessage = async () => {
         await connectionRef.current.invoke("SendMessage", userClient, mes.current.value)
+        mes.current.value = "";
+    }
+
+    const handleKeyEnter = (event) => {
+        if (event.key === 'Enter') {
+            handleMessage()
+        }
     }
 
     return (<>
@@ -89,7 +98,7 @@ export default function GirlsPage() {
                         }
                     </div>
                     <div className="chat-input">
-                        <input type="text" placeholder="Type a message..." ref={mes}/>
+                        <input type="text" placeholder="Type a message..." ref={mes} onKeyPress={handleKeyEnter}/>
                         <div className="input-action-icon">
                             <a>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"
