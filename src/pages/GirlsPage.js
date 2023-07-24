@@ -21,7 +21,7 @@ export default function GirlsPage() {
 
     useLayoutEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:44349/chatHub')
+            .withUrl('http://server.tinderr.id.vn/chatHub')
             .build();
         connection.start()
             .then(() => {
@@ -51,7 +51,6 @@ export default function GirlsPage() {
                     user: item.fromUser,
                     message: item.content,
                 }));
-
                 setMessages(prevMessages => [...prevMessages, ...newMessages]);
 
             })
