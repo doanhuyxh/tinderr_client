@@ -5,14 +5,23 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import './Banner.scss'
 import {EffectCoverflow, Pagination} from 'swiper/modules';
-import anh1 from '../../../images/anh1.jpg';
-import anh2 from '../../../images/anh2.jpg';
-import anh3 from '../../../images/anh3.jpg';
-import anh4 from '../../../images/anh4.jpg';
-import anh5 from '../../../images/anh5.jpg';
-import anh6 from '../../../images/anh6.jpg';
+import {baseUrlHttp, baseUrlHttps, baseUrlHttpApi, baseUrlHttpsApi} from "../../../Constant";
+import axios from "../../../Axios";
 
 export default function Banner() {
+    const [data, setData] = React.useState([]);
+
+    React.useEffect(() => {
+        axios.get("api/MobileAPI/banner")
+            .then(response => {
+                setData(response.data.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+
+
     return (<>
         <div className="banner">
             <Swiper
@@ -25,35 +34,13 @@ export default function Banner() {
                 }}
                 modules={[EffectCoverflow, Pagination]}
                 className="mySwiper">
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh4}
-                         className="d-block w-100 banner-image" alt="Slide 1"></img>
-                </SwiperSlide>
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh5}
-                         className="d-block w-100 banner-image"
-                         alt="Slide 2"></img>
-                </SwiperSlide>
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh3}
-                         className="d-block w-100 banner-image"
-                         alt="Slide 3"></img>
-                </SwiperSlide>
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh1}
-                         className="d-block w-100 banner-image"
-                         alt="Slide 4"></img>
-                </SwiperSlide>
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh2}
-                         className="d-block w-100 banner-image"
-                         alt="Slide 5"></img>
-                </SwiperSlide>
-                <SwiperSlide className="w-80 banner-image__wrap">
-                    <img src={anh6}
-                         className="d-block w-100 banner-image"
-                         alt="Slide 5"></img>
-                </SwiperSlide>
+                {data.map((item, index) => (
+                    <SwiperSlide key={index} className="w-80 banner-image__wrap">
+                        <img src={baseUrlHttp + item.path}
+                             className="d-block w-100 banner-image" alt={"Slide" + index}></img>
+                    </SwiperSlide>
+
+                ))}
             </Swiper>
         </div>
     </>);

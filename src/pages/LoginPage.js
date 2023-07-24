@@ -1,6 +1,6 @@
 import React from "react";
 import "./LoginPage.scss"
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "../Axios";
 
 export default function LoginPage() {
@@ -13,7 +13,7 @@ export default function LoginPage() {
         event.preventDefault();
 
         axios
-            .post("/api/MobileAPI/login", {username, password})
+            .post("api/MobileAPI/login", {username, password})
             .then((response) => {
                 if (response.data.isSuccess) {
                     localStorage.setItem('userData', JSON.stringify(response.data.data));
@@ -43,7 +43,8 @@ export default function LoginPage() {
                                    onChange={e => setPassword(e.target.value)}/>
                             <label htmlFor="password">Password</label>
                         </div>
-                        <button type="submit">Login</button>
+                        <button className="mb-3" type="submit">Login</button>
+                        <span>Bạn chưa có tài khoản, </span><Link to="/register"><span>Đăng ký ngay</span></Link>
                     </form>
                 </div>
             </div>

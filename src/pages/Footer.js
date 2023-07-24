@@ -10,7 +10,7 @@ import iconGirl from '../images/icon.png'
 export default function Footer() {
     const location = useLocation();
 
-    // Don't render the Footer if we're on the GirlsPage.
+    // Don't render the Footer if we're on the MessagePage.
     if (location.pathname === '/girls' || location.pathname === '/votingHall') {
         return null;
     }

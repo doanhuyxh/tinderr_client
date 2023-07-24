@@ -20,7 +20,7 @@ export default function Popular() {
 
     const fetchData = () => {
         axios
-            .get("/api/MobileAPI/videoHome")
+            .get("MobileAPI/videoHome")
             .then((response) => {
                 setData(response.data.data);
             })
@@ -53,7 +53,7 @@ export default function Popular() {
                     spaceBetween={30}
                     modules={[Pagination]}
                     className="mySwiper">
-                    {data.map((item, index) => ( // Sử dụng data từ state
+                    {data.map((item, index) => (
                         <SwiperSlide key={index} className="swiper-slide h-100 position-relative">
                             <div onClick={() => handleClick(item.id)}>
                                 <div className="movie_cover position-relative d-inline-block">

@@ -30,22 +30,37 @@ export default function RegisterPage() {
         }
         let passwordHash = password;
         let userName = username;
-        fetch("http://server.tinderr.id.vn/api/MobileAPI/register", {
-            method: 'POST', headers: {
-                'Content-Type': 'application/json',
-            }, body: JSON.stringify({userName, passwordHash, inviteCode, ip}),
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+
+        // fetch("http://server.tinderr.id.vn/api/MobileAPI/register", {
+        //     method: 'POST', headers: {
+        //         'Content-Type': 'application/json',
+        //     }, body: JSON.stringify({userName, passwordHash, inviteCode, ip}),
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         if (data.success) {
+        //             navigate(`/login`);
+        //         } else {
+        //             setError(data.message || 'Unknown error');
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         setError(error.message);
+        //     });
+
+        axios
+            .post("api/MobileAPI/register", {userName, passwordHash, inviteCode, ip})
+            .then((response) => {
+                if (response.data.isSuccess) {
                     navigate(`/login`);
                 } else {
-                    setError(data.message || 'Unknown error');
+                    setError(response.data.message || 'Unknown error');
                 }
             })
             .catch((error) => {
                 setError(error.message);
             });
+
     };
 
     return (<>

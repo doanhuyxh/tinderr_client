@@ -1,7 +1,8 @@
 import axios from 'axios';
+import {baseUrlHttp} from "./Constant";
 
 const instance = axios.create({
-    baseURL: "http://server.tinderr.id.vn",
+    baseURL: baseUrlHttp,
     //withCredentials: true
 });
 export default instance;

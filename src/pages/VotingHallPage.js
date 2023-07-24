@@ -1,11 +1,28 @@
 import * as React from "react";
 import "./VotingHallPage.scss"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 export default function VotingHallPage() {
-
+    const [seconds, setSeconds] = useState(60);
     const [isShow, setIsShow] = useState(false);
+
+    useEffect(() => {
+        if (seconds > 0) {
+            const intervalId = setInterval(() => {
+                setSeconds(seconds - 1);
+            }, 1000);
+
+            return () => clearInterval(intervalId);
+        } else {
+            console.log("Countdown ended!");
+            setSeconds(60);
+        }
+    }, [seconds]);
+
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 
     function showHistory() {
         setIsShow(!isShow);
@@ -31,7 +48,7 @@ export default function VotingHallPage() {
                     </div>
                     <span className="period-number">Phiên <b>2023071811311</b></span>
                     <div className="next-number"><span></span>
-                        <div className="count-down">00:00:58</div>
+                        <div className="count-down">{formattedTime}</div>
                     </div>
                 </div>
                 <div className="linear-gradient"></div>

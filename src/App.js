@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import ProfilePage from "./pages/ProfilePage";
 import RegisterPage from "./pages/RegisterPage";
 import VideoPage from "./pages/VideoPage";
-import GirlsPage from "./pages/GirlsPage";
+import MessagePage from "./pages/MessagePage";
 import Footer from "./pages/Footer";
 import VotingHallPage from "./pages/VotingHallPage";
 import WatchPage from "./components/WatchPage/WatchPage";
@@ -26,7 +26,7 @@ function App() {
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/history" element={<HistoryPage/>}/>
-                    <Route path="/girls" element={<GirlsPage/>}/>
+                    <Route path="/girls" element={<MessagePage/>}/>
                     <Route path="/chat" element={<ChatPage/>}/>
                     <Route path="/watch/:itemId" element={<WatchPage />} />
                 </Routes>
