@@ -5,7 +5,15 @@ import * as signalR from '@microsoft/signalr';
 import {useRef, useState, useLayoutEffect} from "react";
 
 export default function GirlsPage() {
-    let userClient = "admin1234";
+    let userSave = localStorage.getItem("userName");
+    if(userSave === null || userSave === undefined){
+        let _user = Math.random().toFixed(2)*100 + "_user";
+        localStorage.setItem("userName", _user);
+        fetch(`https://localhost:44349/Chat/SaveOtherUser?name=${localStorage.getItem("userName")}`)
+    }
+
+    let userClient = localStorage.getItem("userName");
+    console.log("User Client", userClient);
     const [messages, setMessages] = useState([]);
     const connectionRef = useRef(null);
     const chatBodyRef = useRef(null);
