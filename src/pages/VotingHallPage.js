@@ -2,12 +2,24 @@ import * as React from "react";
 import "./VotingHallPage.scss"
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import axios from "../Axios";
 
 export default function VotingHallPage() {
     const [seconds, setSeconds] = useState(60);
     const [isShow, setIsShow] = useState(false);
+    const [history, setHistory] = useState([]);
+    const [selectedNames, setSelectedNames] = useState([]);
 
     useEffect(() => {
+        axios
+            .get("api/MobileAPI/historyGame")
+            .then((response) => {
+                setHistory(response.data.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
         if (seconds > 0) {
             const intervalId = setInterval(() => {
                 setSeconds(seconds - 1);
@@ -27,6 +39,24 @@ export default function VotingHallPage() {
     function showHistory() {
         setIsShow(!isShow);
     }
+
+    const handleRectangleClick = (name) => {
+        // Check if the name is already in the selected names array
+        const isSelected = selectedNames.includes(name);
+        if (isSelected) {
+            // If it's selected, remove it from the array
+            setSelectedNames(selectedNames.filter((selectedName) => selectedName !== name));
+        } else {
+            // If it's not selected, add it to the array
+            setSelectedNames([...selectedNames, name]);
+        }
+    };
+
+    const rectangleClass = (name) => {
+        return `wrapper ${selectedNames.includes(name) ? 'selected-wrapper' : ''}`;
+    };
+
+    const selectedNamesText = selectedNames.join(", ");
 
     let classNames = `popup ${isShow ? 'showModal' : ''}`;
 
@@ -74,32 +104,32 @@ export default function VotingHallPage() {
                         </div>
                         <div className="linear-gradient"></div>
                         <div className="sumValueTwoSides">
-                            <div className="rectangle">
-                                <div className="wrapper">
+                            <div className="rectangle" onClick={() => handleRectangleClick("Xuân")}>
+                                <div className={rectangleClass("Xuân")}>
                                     <div className="content">
                                         <p className="name-text">Xuân</p>
                                         <p className="odd-text">1.90</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="rectangle">
-                                <div className="wrapper">
+                            <div className="rectangle" onClick={() => handleRectangleClick("Hạ")}>
+                                <div className={rectangleClass("Hạ")}>
                                     <div className="content">
                                         <p className="name-text">Hạ</p>
                                         <p className="odd-text">1.90</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="rectangle">
-                                <div className="wrapper">
+                            <div className="rectangle" onClick={() => handleRectangleClick("Thu")}>
+                                <div className={rectangleClass("Thu")}>
                                     <div className="content">
                                         <p className="name-text">Thu</p>
                                         <p className="odd-text">1.90</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className="rectangle">
-                                <div className="wrapper">
+                            <div className="rectangle" onClick={() => handleRectangleClick("Đông")}>
+                                <div className={rectangleClass("Đông")}>
                                     <div className="content">
                                         <p className="name-text">Đông</p>
                                         <p className="odd-text">1.90</p>
@@ -127,7 +157,7 @@ export default function VotingHallPage() {
                     <div className="wrapper">
                         <div className="item">
                             <span className="label">Các lựa chọn hiện tại：</span>
-                            <div className="bet-number">Không được chọn</div>
+                            <div className="bet-number">{selectedNames.length > 0 ? selectedNamesText : "Không được chọn"}</div>
                             <i className="icon icon-arrow-down up"></i></div>
                         <div className="item">
                             <span className="label">Nhập Số điểm mỗi ô đặt：</span>
@@ -163,246 +193,19 @@ export default function VotingHallPage() {
                                     <div className="left font-weight" style={{color: "red"}}>Phiên</div>
                                     <div className="right font-weight" style={{color: "red"}}>Kết quả</div>
                                 </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811327</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Hạ</span></div>
+                                {history.map((item, index) => (
+                                    <div className="item">
+                                        <div className="left font-weight">{item.wave}</div>
+                                        <div className="right font-weight">
+                                            <div className="kuaisan-ball left">
+                                                {item.xuan && <span className="res-des middle">{item.xuan}</span>}
+                                                {item.ha && <span className="res-des middle">{item.ha}</span>}
+                                                {item.thu && <span className="res-des middle">{item.thu}</span>}
+                                                {item.dong && <span className="res-des middle">{item.dong}</span>}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811326</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811325</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Xuân</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811324</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811324</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Xuân</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811323</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811322</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811321</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811320</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Đông</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811319</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811318</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Đông</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811317</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811316</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811315</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Xuân</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811314</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811313</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811312</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811311</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Thu</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811310</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Thu</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811309</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Thu</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811308</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811308</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811307</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811306</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811305</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Thu</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811304</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Xuân</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811303</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Thu</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811302</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Xuân</span><span
-                                            className="res-des middle">Đông</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811301</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Hạ</span><span
-                                            className="res-des middle">Hạ</span></div>
-                                    </div>
-                                </div>
-                                <div className="item">
-                                    <div className="left font-weight">2023071811300</div>
-                                    <div className="right font-weight">
-                                        <div className="kuaisan-ball left"><span
-                                            className="res-des middle">Đông</span><span
-                                            className="res-des middle">Đông</span></div>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>

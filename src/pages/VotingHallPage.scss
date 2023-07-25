@@ -281,6 +281,16 @@
                 }
               }
             }
+
+            .wrapper.selected-wrapper {
+              background-color: red;
+
+              .content {
+                .name-text, .odd-text {
+                  color: white;
+                }
+              }
+            }
           }
         }
       }
