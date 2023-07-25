@@ -24,7 +24,7 @@ export default function HotGame() {
 
                 <div className="hot-item">
                     <div className="d-flex">
-                        <Link to="/vote1" className="col-3 hot-item__container nav-link text-dark">
+                        <Link to="/votingHall" className="col-3 hot-item__container nav-link text-dark">
                             <div className="d-flex flex-column align-items-center">
                                 <div className="hot-item__wrap">
                                     <img
@@ -35,7 +35,7 @@ export default function HotGame() {
                                 <span className="hot-item__title">Bình chọn 1</span>
                             </div>
                         </Link>
-                        <Link to="/vote2" className="col-3 hot-item__container nav-link text-dark">
+                        <Link to="/votingHall" className="col-3 hot-item__container nav-link text-dark">
                             <div className="d-flex flex-column align-items-center">
                                 <div className="hot-item__wrap">
                                     <img
@@ -46,7 +46,7 @@ export default function HotGame() {
                                 <span className="hot-item__title">Bình chọn 2</span>
                             </div>
                         </Link>
-                        <Link to="/vote3" className="col-3 hot-item__container nav-link text-dark">
+                        <Link to="/votingHall" className="col-3 hot-item__container nav-link text-dark">
                             <div className="d-flex flex-column align-items-center">
                                 <div className="hot-item__wrap">
                                     <img
@@ -57,7 +57,7 @@ export default function HotGame() {
                                 <span className="hot-item__title">Bình chọn 3</span>
                             </div>
                         </Link>
-                        <Link to="/vote4" className="col-3 hot-item__container nav-link text-dark">
+                        <Link to="/votingHall" className="col-3 hot-item__container nav-link text-dark">
                             <div className="d-flex flex-column align-items-center">
                                 <div className="hot-item__wrap">
                                     <img

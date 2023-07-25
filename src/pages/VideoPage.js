@@ -8,11 +8,14 @@ export default function VideoPage() {
     const navigate = useNavigate();
     const [dataCate, setDataCate] = React.useState([]);
     const [dataVideo, setDataVideo] = React.useState([]);
+    const [selectedCategoryVideos, setSelectedCategoryVideos] = React.useState([]);
+    const [showAllVideos, setShowAllVideos] = React.useState(false);
     const userData = localStorage.getItem('userData');
     const user = userData ? JSON.parse(userData) : {};
 
     React.useEffect(() => {
         fetchData();
+        handleShowAllVideos(); // Hiển thị tất cả video ban đầu
     }, []);
 
     const fetchData = () => {
@@ -26,7 +29,7 @@ export default function VideoPage() {
             });
 
         axios
-            .get("api/MobileAPI/videoHome")
+            .get("api/MobileAPI/allVideo")
             .then((response) => {
                 setDataVideo(response.data.data);
             })
@@ -44,6 +47,17 @@ export default function VideoPage() {
         }
     };
 
+    const handleCategoryClick = (categoryId) => {
+        setShowAllVideos(false);
+        const videosInCategory = dataVideo.filter((video) => video.categoryId === categoryId);
+        setSelectedCategoryVideos(videosInCategory);
+    };
+
+    const handleShowAllVideos = () => {
+        setShowAllVideos(true);
+        setSelectedCategoryVideos([]); // Xóa danh sách video của category khi hiển thị tất cả video
+    };
+
     return (<>
         <div className="video-page bg-light">
             <div className="navbar-container">
@@ -53,13 +67,17 @@ export default function VideoPage() {
                             <div className="menu-homemenu-container">
                                 <div className="menu-homemenu-container">
                                     <ul id="menu-menu-main" className="navbar-left">
-                                        {dataCate.map((item, index) => (
-                                            <li key={index} className="menu-item ">
-                                                <a title={item.categoryName}
-                                                   alt={item.categoryName}
-                                                   href="/">{item.categoryName}</a>
-                                            </li>
-                                        ))}
+                                        <li className="menu-item">
+                                            <a title="" alt="" href="#" onClick={handleShowAllVideos}>
+                                                Tất cả
+                                            </a>
+                                        </li>
+                                        {dataCate.map((item, index) => (<li key={index} className="menu-item">
+                                            <a title={item.categoryName} alt={item.categoryName} href="#"
+                                               onClick={() => handleCategoryClick(item.id)}>
+                                                {item.categoryName}
+                                            </a>
+                                        </li>))}
                                     </ul>
                                 </div>
                             </div>
@@ -78,7 +96,7 @@ export default function VideoPage() {
                 <div className="container">
                     <div className="video-loop">
                         <div className="row no-gutters">
-                            {dataVideo.map((item, index) => (
+                            {showAllVideos ? dataVideo.map((item, index) => ( /* Render tất cả video */
                                 <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-3"
                                      onClick={() => handleClick(item.id)}>
                                     <div className="video-block thumbs-rotation">
@@ -94,8 +112,23 @@ export default function VideoPage() {
                                             <span className="views-number">{item.viewCount} views </span>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                </div>)) : selectedCategoryVideos.map((item, index) => ( /* Render danh sách video tương ứng với category đã chọn */
+                                <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-3"
+                                     onClick={() => handleClick(item.id)}>
+                                    <div className="video-block thumbs-rotation">
+                                        <div className="thumb">
+                                            <img alt="Ảnh sex" className="video-img img-fluid loaded"
+                                                 src={baseUrlHttp + item.imgAvatarPath}>
+                                            </img>
+                                        </div>
+                                        <div className="infos" title="Được crush đang say rượu rủ về nhà tâm sự">
+                                            <span className="title1">{item.videoName}</span>
+                                        </div>
+                                        <div className="video-datas">
+                                            <span className="views-number">{item.viewCount} views </span>
+                                        </div>
+                                    </div>
+                                </div>))}
                         </div>
                     </div>
                 </div>
