@@ -1,3 +1,27 @@
+.modal.fade-in {
+  display: block;
+  animation: fadeInModal 0.3s ease-in-out;
+}
+
+@keyframes fadeInModal {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
 .watch-page {
 
   .video {
@@ -30,7 +54,7 @@
         line-height: 1.6;
         box-sizing: border-box;
         position: relative;
-        margin: 15px 0;
+        margin: 25px 0 15px;
 
         .section-title {
           box-sizing: border-box;
@@ -85,6 +109,7 @@
           position: relative;
           padding: 10px;
           margin-bottom: 20px;
+          cursor: pointer;
 
           .dp-item {
             color: #a5a5a5;
@@ -180,7 +205,7 @@
                   font-weight: bold;
                   margin: 0 4px;
 
-                  a {
+                  span {
                     list-style: none;
                     text-align: center;
                     line-height: 19px;

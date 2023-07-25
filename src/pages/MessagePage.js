@@ -2,25 +2,30 @@ import * as React from "react";
 import {Link} from "react-router-dom";
 import "./MessagePage.scss"
 import * as signalR from '@microsoft/signalr';
-import {useRef, useState, useLayoutEffect} from "react";
+import {useRef, useState, useEffect} from "react";
 import {baseUrlHttp} from "../Constant";
 
 export default function MessagePage() {
     let userSave = localStorage.getItem("userName");
+    let userLogin = localStorage.getItem("userData");
+    let userClient;
+    if (userLogin) {
+        userSave = JSON.parse(userLogin).userName;
+    }
     if (userSave === null || userSave === undefined) {
-        let _user = Math.random().toFixed(2) * 100 + "_user";
+        let _user = "user_" + Math.random().toFixed(8) * 100;
         localStorage.setItem("userName", _user);
         fetch(`${baseUrlHttp}Chat/SaveOtherUser?name=${localStorage.getItem("userName")}`)
+        userClient = localStorage.getItem("userName");
     }
-
-    let userClient = localStorage.getItem("userName");
+    userClient = userSave;
     console.log("User Client", userClient);
     const [messages, setMessages] = useState([]);
     const connectionRef = useRef(null);
     const chatBodyRef = useRef(null);
     const mes = useRef(null);
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
             .withUrl('http://server.tinderr.id.vn/chatHub')
             .build();
@@ -37,11 +42,16 @@ export default function MessagePage() {
 
         connection.on("ReceiveMessageToUser", function (user, adminChat, message) {
             console.log("message", message, adminChat);
-            setMessages((prevListMes) => [...prevListMes, {user, message}]);
+            if (userClient == user) {
+                setMessages((prevListMes) => [...prevListMes, {user, message}]);
+            }
         })
 
         connection.on("ReceiveMessageToAdmin", function (user, adminChat, message) {
-            setMessages((prevListMes) => [...prevListMes, {adminChat, message}]);
+            if (userClient == user) {
+                setMessages((prevListMes) => [...prevListMes, {adminChat, message}]);
+            }
+
         })
 
         connection.on("ReceiveMessageHistoryToUser", function (user, history) {
@@ -92,7 +102,6 @@ export default function MessagePage() {
 
                 <div className="chat-screen">
                     <div className="chat-body" ref={chatBodyRef}>
-                        <div className="chat-start">Monday, 1:27 PM</div>
                         {
                             messages.map((item, index) => {
                                 if (item.user === userClient) {

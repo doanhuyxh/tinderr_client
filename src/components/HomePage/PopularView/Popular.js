@@ -9,10 +9,13 @@ import no1 from '../../../images/no1.png';
 import no2 from '../../../images/no2.png';
 import no3 from '../../../images/no3.png';
 import axios from "../../../Axios";
+import {baseUrlHttp} from "../../../Constant";
 
 export default function Popular() {
     const navigate = useNavigate();
     const [data, setData] = React.useState([]);
+    const userData = localStorage.getItem('userData');
+    const user = userData ? JSON.parse(userData) : {};
 
     React.useEffect(() => {
         fetchData();
@@ -20,7 +23,7 @@ export default function Popular() {
 
     const fetchData = () => {
         axios
-            .get("MobileAPI/videoHome")
+            .get("api/MobileAPI/videoHome")
             .then((response) => {
                 setData(response.data.data);
             })
@@ -30,7 +33,11 @@ export default function Popular() {
     };
 
     const handleClick = (itemId) => {
-        navigate(`/watch/${itemId}`);
+        if (user && user.userName) {
+            navigate(`/watch/${itemId}`);
+        } else {
+            navigate('/login')
+        }
     };
 
     return (<>
@@ -59,7 +66,7 @@ export default function Popular() {
                                 <div className="movie_cover position-relative d-inline-block">
                                     <img
                                         className="movie-image w-100 h-100 position-absolute d-block"
-                                        src={item.imgAvatarPath} // Sử dụng imgAvatarPath từ dữ liệu API
+                                        src={baseUrlHttp + item.imgAvatarPath} // Sử dụng imgAvatarPath từ dữ liệu API
                                         alt={item.videoName} // Sử dụng videoName từ dữ liệu API
                                     />
                                 </div>

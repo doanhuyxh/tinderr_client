@@ -1,33 +1,110 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
 import ReactPlayer from "react-player";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import "./WatchPage.scss"
+import axios from "../../Axios";
+import {baseUrlHttp} from "../../Constant";
 
-export default function WatchPage({navigate}) {
+export default function WatchPage() {
+    const navigate = useNavigate();
     const {itemId} = useParams();
     let _base64 = "data:video/mp4;base64,";
+    const [data, setData] = React.useState([]);
+    const [showModal, setShowModal] = React.useState(false);
     const [base64, setBase64] = useState(_base64)
+    let userData = localStorage.getItem('userData');
+    let user = userData ? JSON.parse(userData) : {};
+    let flag = useRef(true);
+
     useEffect(() => {
+        if (flag.current) {
+            flag.current = false;
 
-        fetch(`http://scammer.click:83/api/MobileAPI/id/${itemId}`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                const dataUrl = `data:video/mp4;base64,${data.data}`;
-                setBase64(dataUrl);
-            })
-            .catch(error => console.log('Error:', error));
+            axios
+                .get("api/MobileAPI/videoHome")
+                .then((response) => {
+                    setData(response.data.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
 
+            axios.get(`api/MobileAPI/id/${itemId}`)
+                .then(res => {
+                    const dataUrl = `data:video/mp4;base64,${res.data.data}`;
+                    setBase64(dataUrl);
+                })
+                .catch(error => console.log('Error:', error));
+
+            axios
+                .get(`api/MobileAPI/watchVideo?videoId=${itemId}&userId=${user.id}`)
+                .then((response) => {
+                    if (response.data.isSuccess) {
+                        navigate(`/watch/${itemId}`);
+                    } else {
+                        setTimeout(() => {
+                            setShowModal(true);
+                            document.body.style.overflow = "hidden";
+                        }, 200);
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            axios.get(`api/MobileAPI/UpdateBalace?userId=${user.id}`)
+                .then(res => {
+                    if (res.data.isSuccess) {
+                        user.balance = res.data.data;
+                        localStorage.setItem("userData", JSON.stringify(user));
+                    }
+                })
+                .catch(error => console.log('Error:', error));
+        }
+
+        return () => {
+            document.body.style.overflow = "auto";
+        };
     }, []);
 
+    const handleClick = (itemId) => {
+        if (user && user.userName) {
+            navigate(`/watch/${itemId}`);
+            window.location.reload();
+        } else {
+            navigate('/login');
+        }
+    };
 
-    return (
+    const closeModal = () => {
+        setShowModal(false);
+        navigate(-1)
+        document.body.style.overflow = "auto";
+    }
+
+
+    return (<>
+        {showModal && <div className={`modal d-flex align-items-center ${showModal ? "fade-in" : ""}`}
+                           tabIndex="-1">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header justify-content-center">
+                        <h5 className="modal-title">Thông báo</h5>
+                    </div>
+                    <div className="modal-body text-center">
+                        <p>Bạn đang không có đủ số dư, vui lòng liên hệ với admin để nạp tiền.</p>
+                    </div>
+                    <div className="modal-footer w-100">
+                        <button type="button" className="btn btn-primary w-100" onClick={closeModal}>OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>}
+
+        {showModal && <div className="overlay" onClick={closeModal}></div>}
+
         <div className="watch-page">
-            <div className="video">
+            <div className="video bg-dark">
                 <ReactPlayer width='100%' url={base64} controls={true}/>
             </div>
 
@@ -39,66 +116,32 @@ export default function WatchPage({navigate}) {
                         </h3>
                     </div>
                     <div className="dp_box">
-                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6 thumb grid-item">
-                            <article className="dp-item">
-                                <a className="dp-thumb"
-                                   href="/xem/2503/tru-mua-trong-khach-san-cung-xzirq"
-                                   title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng">
-                                    <figure>
-                                        <img
-                                            src="https://img-99.w3img.com/images_new/mini_6_size/F9iQbotN-P42uYHce_Zlg3MIGqxXAyB6SkT.jpg"
-                                            className="lazy" alt="Trú mưa trong khách sạn cùng sếp nữ dâm đãng"
-                                            title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng" width="277"
-                                            height="152"></img>
-                                    </figure>
-                                    <div className="icon_overlay"></div>
-                                </a>
-                                <div className="dp-post-title-box">
-                                    <div className="dp-post-title">
-                                        <h2 className="entry-title">
-                                            <a
-                                                href="/xem/2503/tru-mua-trong-khach-san-cung-xzirq"
-                                                title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng"> Trú mưa trong
-                                                khách
-                                                sạn
-                                                cùng sếp nữ dâm đãng</a>
-                                        </h2>
+                        {data.filter(x => x.id != itemId).map((item, index) => (
+                            <div key={index} className="col-lg-3 col-md-3 col-sm-3 col-xs-6 thumb grid-item"
+                                 onClick={() => handleClick(item.id)}>
+                                <article className="dp-item">
+                                    <div className="dp-thumb" title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng">
+                                        <figure>
+                                            <img
+                                                src={baseUrlHttp + item.imgAvatarPath}
+                                                className="lazy" alt=""
+                                                width="277"
+                                                height="152">
+                                            </img>
+                                        </figure>
                                     </div>
-                                </div>
-                            </article>
-                        </div>
-                        <div className="col-lg-3 col-md-3 col-sm-3 col-xs-6 thumb grid-item">
-                            <article className="dp-item">
-                                <a className="dp-thumb"
-                                   href="/xem/2503/tru-mua-trong-khach-san-cung-xzirq"
-                                   title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng">
-                                    <figure>
-                                        <img
-                                            src="https://img-99.w3img.com/images_new/mini_6_size/F9iQbotN-P42uYHce_Zlg3MIGqxXAyB6SkT.jpg"
-                                            className="lazy" alt="Trú mưa trong khách sạn cùng sếp nữ dâm đãng"
-                                            title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng" width="277"
-                                            height="152"></img>
-                                    </figure>
-                                    <div className="icon_overlay"></div>
-                                </a>
-                                <div className="dp-post-title-box">
-                                    <div className="dp-post-title">
-                                        <h2 className="entry-title">
-                                            <a
-                                                href="/xem/2503/tru-mua-trong-khach-san-cung-xzirq"
-                                                title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng"> Trú mưa trong
-                                                khách
-                                                sạn
-                                                cùng sếp nữ dâm đãng</a>
-                                        </h2>
+                                    <div className="dp-post-title-box">
+                                        <div className="dp-post-title">
+                                            <h2 className="entry-title">
+                                                <span>{item.videoName}</span>
+                                            </h2>
+                                        </div>
                                     </div>
-                                </div>
-                            </article>
-                        </div>
-
+                                </article>
+                            </div>))}
                     </div>
                 </div>
             </section>
         </div>
-    );
+    </>);
 }

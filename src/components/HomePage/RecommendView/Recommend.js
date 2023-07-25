@@ -2,10 +2,13 @@ import * as React from "react";
 import "./Recommend.scss"
 import {Link, useNavigate} from "react-router-dom";
 import axios from "../../../Axios";
+import {baseUrlHttp} from "../../../Constant";
 
 export default function Recommend() {
     const navigate = useNavigate();
     const [data, setData] = React.useState([]);
+    const userData = localStorage.getItem('userData');
+    const user = userData ? JSON.parse(userData) : {};
 
     React.useEffect(() => {
         fetchData();
@@ -13,7 +16,7 @@ export default function Recommend() {
 
     const fetchData = () => {
         axios
-            .get("/api/MobileAPI/videoHome")
+            .get("api/MobileAPI/videoHome")
             .then((response) => {
                 setData(response.data.data);
             })
@@ -23,7 +26,11 @@ export default function Recommend() {
     };
 
     const handleClick = (itemId) => {
-        navigate(`/watch/${itemId}`);
+        if (user && user.userName) {
+            navigate(`/watch/${itemId}`);
+        } else {
+            navigate('/login')
+        }
     };
 
     return (<>
@@ -42,13 +49,12 @@ export default function Recommend() {
 
             <div className="recommend-item">
                 <div className="movie-list__container">
-                    {/*Item 1*/}
                     {data.map((item, index) => (
                         <div key={index} className="movie-list__item position-relative" onClick={() => handleClick(item.id)}>
                             <div className="movie_cover position-relative d-inline-block">
                                 <img
                                     className="movie-image w-100 h-100 position-absolute d-block"
-                                    src={item.imgAvatarPath}
+                                    src={baseUrlHttp + item.imgAvatarPath}
                                     alt={item.videoName}></img>
                             </div>
                             <div className="movie-title__container">

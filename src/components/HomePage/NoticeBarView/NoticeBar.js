@@ -22,7 +22,7 @@ export default function NoticeBar() {
             <i className="notice-bar__icon fa-solid fa-bullhorn"></i>
             <div role="marquee"
                  className="notice-bar__wrap d-flex position-relative overflow-hidden align-items-center h-100">
-                {data.map((item, index) => (<div className="notice-bar__content">
+                {data.map((item, index) => (<div key={index} className="notice-bar__content">
                     {item.content}
                 </div>))}
             </div>

@@ -10,29 +10,30 @@ export default function ProfilePage() {
     const userData = localStorage.getItem('userData');
     const user = userData ? JSON.parse(userData) : {};
 
-    const [avatar, setAvatar] = React.useState(user.avatar || "");
     const [name, setName] = React.useState(user.name || "");
-    const [bankNumber, setBankNumber] = React.useState(user.bankNumber || "");
-    const [bankName, setBankName] = React.useState(user.bankName || "");
-
-    console.log(user)
+    const [bankNumber, setBankNumber] = React.useState(user.banknumber || "");
+    const [bankName, setBankName] = React.useState(user.bankname || "");
+    const [showModal, setShowModal] = React.useState(false);
 
     const handleEdit = (event) => {
         event.preventDefault();
-
+        let applicationUserId = user.id;
         axios
-            .post("api/MobileAPI/updateUser", {name, bankNumber, bankName})
+            .post("api/MobileAPI/updateUser", {applicationUserId, name, bankNumber, bankName})
             .then((response) => {
-
+                user.name = response.data.data.name;
+                user.banknumber = response.data.data.banknumber;
+                user.bankname = response.data.data.bankname;
+                localStorage.setItem("userData", JSON.stringify(user));
+                window.location.reload();
             })
             .catch((error) => {
-
+                console.log(error);
             });
-
     }
 
     const handleLogout = () => {
-        localStorage.removeItem('userData');
+        localStorage.clear();
         navigate('/login');
     }
 
@@ -41,7 +42,8 @@ export default function ProfilePage() {
     }
 
     return (<>
-        <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
+        <div className={`modal ${showModal ? "fade" : ""}`}
+             id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div className="modal-dialog">
                 <div className="modal-content">
@@ -52,15 +54,13 @@ export default function ProfilePage() {
                     <div className="modal-body">
                         <div className="profile-info">
                             <div className="info-item">
-                                {/*<input type="file" onChange={e => setAvatar(e.target.files[0])}></input>*/}
-                            </div>
-                            <div className="info-item">
                                 <strong>Họ và tên:</strong>
                                 <input type="text" value={name} onChange={e => setName(e.target.value)}></input>
                             </div>
                             <div className="info-item">
                                 <strong>Số tài khoản:</strong>
-                                <input type="text" value={bankNumber} onChange={e => setBankNumber(e.target.value)}></input>
+                                <input type="text" value={bankNumber}
+                                       onChange={e => setBankNumber(e.target.value)}></input>
                             </div>
                             <div className="info-item">
                                 <strong>Ngân hàng:</strong>
@@ -80,24 +80,29 @@ export default function ProfilePage() {
             <div className="profile-container">
                 <div className="profile-header">
                     {user && user.userName ? (
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">Chỉnh sửa</button>) : (<div></div>)}
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                            Chỉnh sửa</button>) : (<div></div>)}
                 </div>
                 <div className="profile-info">
                     <h2>Thông tin cá nhân</h2>
                     <div className="info-item">
-                        <img className="avatar" src={baseUrlHttp + user.avatartPath || userIcon} alt="avatar"></img>
+                        <img
+                            className="avatar"
+                            src={user.avatartPath === undefined ? userIcon : baseUrlHttp + user.avatartPath}
+                            alt="avatar">
+                        </img>
                     </div>
                     <div className="info-item">
                         <strong>Họ và tên: </strong> {user.name || "N/A"}
                     </div>
                     <div className="info-item">
-                        <strong>Số dư: </strong> {user.balance = "undefined" ? "0" : user.balance}
+                        <strong>Số dư: </strong> {user.balance || 0}
                     </div>
                     <div className="info-item">
-                        <strong>Số tài khoản: </strong> {user.bankNumber || "N/A"}
+                        <strong>Số tài khoản: </strong> {user.banknumber || "N/A"}
                     </div>
                     <div className="info-item">
-                        <strong>Ngân hàng: </strong> {user.bankName || "N/A"}
+                        <strong>Ngân hàng: </strong> {user.bankname || "N/A"}
                     </div>
 
                 </div>

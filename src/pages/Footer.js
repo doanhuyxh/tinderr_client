@@ -1,11 +1,11 @@
 import * as React from "react";
 import "./Footer.scss"
 import {Link, useLocation} from "react-router-dom";
-import icHome from '../images/ic-home-act.jpg';
-import icFilm from '../images/ic-film.jpg';
-import icClock from '../images/ic-clock.jpg';
-import icUser from '../images/ic-user.jpg';
-import iconGirl from '../images/icon.png'
+import icHome from '../images/ic_home_act.jpg';
+import icFilm from '../images/ic_film.jpg';
+import icClock from '../images/ic_clock.jpg';
+import icUser from '../images/ic_user.jpg';
+import iconChat from '../images/chat_icon.png'
 
 export default function Footer() {
     const location = useLocation();
@@ -29,11 +29,11 @@ export default function Footer() {
                         <img src={icClock}
                              alt="Trang chủ"></img>
                     </div>
-                    <div className="navbar-bottom__text"><span>Sảnh bình chọn</span></div>
+                    <div className="navbar-bottom__text"><span>Sảnh chọn</span></div>
                 </Link>
                 <Link to="/chat" className="d-flex flex-column align-items-center navbar-bottom__link">
                     <div className="navbar-bottom__icon">
-                        <img src={iconGirl}
+                        <img src={iconChat}
                              alt="Trang chủ"></img>
                     </div>
                     <div className="navbar-bottom__text"><span>Chat</span></div>
