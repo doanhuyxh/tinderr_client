@@ -26,7 +26,7 @@ function App() {
                     <Route path="/video" element={<VideoPage/>}/>
                     <Route path="/votingHall" element={<VotingHallPage/>}/>
                     <Route path="/history" element={<HistoryPage/>}/>
-                    <Route path="/girls" element={<MessagePage/>}/>
+                    <Route path="/message" element={<MessagePage/>}/>
                     <Route path="/chat" element={<ChatPage/>}/>
                     <Route path="/watch/:itemId" element={<WatchPage />} />
                 </Routes>

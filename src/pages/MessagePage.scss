@@ -105,7 +105,6 @@
         display: inline-block;
         clear: both;
         margin-bottom: 10px;
-        box-shadow: 0 5px 5px rgba(0, 0, 0, 0.02);
       }
 
       .chat-bubble.me {
@@ -122,11 +121,12 @@
         color: #888ea8;
         border-radius: 0 15px 15px 15px;
         align-self: flex-start;
+        gap: 8px;
         display: table;
       }
     }
 
-    .chat-input {
+    .card-footer {
       font-weight: 400;
       line-height: 1.5;
       text-align: left;
@@ -140,7 +140,7 @@
       position: sticky;
       bottom: 0;
 
-      input {
+      .form-control-message {
         visibility: visible;
         box-sizing: border-box;
         margin: 0 0 0 13px;
@@ -151,9 +151,9 @@
         background: #ffffff;
         padding: 15px 70px 15px 15px;
         resize: none;
-        border-width: 1px 0 0 0;
+        border-width: 1px;
         border-style: solid;
-        border-color: #f8f8f8;
+        border-color: #ddd;
         color: #7a7a7a;
         font-weight: normal;
         font-size: 13px;
@@ -165,34 +165,18 @@
         }
       }
 
-      .input-action-icon {
-        font-weight: 400;
-        line-height: 1.5;
-        font-size: 0.875rem;
-        letter-spacing: 0.0312rem;
-        color: #4CAF50;
-        visibility: visible;
-        box-sizing: border-box;
-        width: 61px;
-        white-space: nowrap;
-        position: absolute;
-        z-index: 1;
-        top: 50%;
-        right: 15px;
-        transform: translateY(-50%);
-
-        button {
-          font-size: 16px;
-          padding: 10px;
-          border-radius: 5px;
-          background-color: #4CAF50;
-          color: white;
-          border: none;
-          margin-left: 24px;
-          cursor: pointer;
-        }
+      .btn-file {
+        border: none;
+        background-color: #fff;
+        font-size: 20px;
       }
 
+      .btn-send-message {
+        border: none;
+        background-color: #fff;
+        font-size: 20px;
+        color: #3b71ca;
+      }
     }
   }
 }

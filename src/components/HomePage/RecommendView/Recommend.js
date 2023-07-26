@@ -60,7 +60,7 @@ export default function Recommend() {
                             <div className="movie-title__container">
                                 <div className="movie-title__wrap">
                                     <span className="movie-title">{item.videoName}</span>
-                                    <span className="movie-count-down">Xem: 184</span>
+                                    <span className="movie-count-down">Xem: {item.viewCount}</span>
                                 </div>
                             </div>
                         </div>

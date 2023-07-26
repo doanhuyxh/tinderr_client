@@ -109,7 +109,7 @@ export default function VideoPage() {
                                             <span className="title1">{item.videoName}</span>
                                         </div>
                                         <div className="video-datas">
-                                            <span className="views-number">{item.viewCount} views </span>
+                                            <span className="views-number">{item.viewCount} lượt xem </span>
                                         </div>
                                     </div>
                                 </div>)) : selectedCategoryVideos.map((item, index) => ( /* Render danh sách video tương ứng với category đã chọn */
@@ -125,7 +125,7 @@ export default function VideoPage() {
                                             <span className="title1">{item.videoName}</span>
                                         </div>
                                         <div className="video-datas">
-                                            <span className="views-number">{item.viewCount} views </span>
+                                            <span className="views-number">{item.viewCount} lượt xem</span>
                                         </div>
                                     </div>
                                 </div>))}

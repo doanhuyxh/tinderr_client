@@ -11,7 +11,7 @@ export default function Footer() {
     const location = useLocation();
 
     // Don't render the Footer if we're on the MessagePage.
-    if (location.pathname === '/girls' || location.pathname === '/votingHall') {
+    if (location.pathname === '/message' || location.pathname === '/votingHall') {
         return null;
     }
 

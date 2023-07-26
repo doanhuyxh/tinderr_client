@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./ProfilePage.scss"
 import {useNavigate} from "react-router-dom";
 import userIcon from "../images/user.png"
@@ -7,23 +7,40 @@ import axios from "../Axios";
 
 export default function ProfilePage() {
     const navigate = useNavigate();
-    const userData = localStorage.getItem('userData');
+    const [userData, setUserData] = React.useState(localStorage.getItem('userData'));
+
     const user = userData ? JSON.parse(userData) : {};
 
     const [name, setName] = React.useState(user.name || "");
     const [bankNumber, setBankNumber] = React.useState(user.banknumber || "");
     const [bankName, setBankName] = React.useState(user.bankname || "");
-    const [showModal, setShowModal] = React.useState(false);
+    const [avatar, setAvatar] = React.useState(user.avatarPath || "");
+
+    useEffect(() => {
+        axios.get(`api/MobileAPI/UpdateBalace?userId=${user.id}`)
+            .then(res => {
+                console.log(res)
+                if (res.data.isSuccess) {
+                    user.balance = res.data.data;
+                    localStorage.setItem("userData", JSON.stringify(user));
+                    setUserData(localStorage.getItem('userData'))
+                }
+            })
+            .catch(error => console.log('Error:', error));
+    }, []);
 
     const handleEdit = (event) => {
         event.preventDefault();
         let applicationUserId = user.id;
+
         axios
-            .post("api/MobileAPI/updateUser", {applicationUserId, name, bankNumber, bankName})
+            .post("api/MobileAPI/updateUser", {applicationUserId, name, bankNumber, bankName, avatar})
             .then((response) => {
+                console.log(response)
                 user.name = response.data.data.name;
                 user.banknumber = response.data.data.banknumber;
                 user.bankname = response.data.data.bankname;
+                user.avatarPath = response.data.data.avatartPath;
                 localStorage.setItem("userData", JSON.stringify(user));
                 window.location.reload();
             })
@@ -41,8 +58,20 @@ export default function ProfilePage() {
         navigate('/login');
     }
 
+    const handleImageChange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            setAvatar(reader.result);
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    };
+
+
     return (<>
-        <div className={`modal ${showModal ? "fade" : ""}`}
+        <div className={`modal fade`}
              id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
             <div className="modal-dialog">
@@ -53,6 +82,10 @@ export default function ProfilePage() {
                     </div>
                     <div className="modal-body">
                         <div className="profile-info">
+                            <div className="info-item">
+                                <strong>Ảnh đại diện:</strong>
+                                <input type="file" onChange={handleImageChange} accept="image/*"></input>
+                            </div>
                             <div className="info-item">
                                 <strong>Họ và tên:</strong>
                                 <input type="text" value={name} onChange={e => setName(e.target.value)}></input>
@@ -81,14 +114,15 @@ export default function ProfilePage() {
                 <div className="profile-header">
                     {user && user.userName ? (
                         <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Chỉnh sửa</button>) : (<div></div>)}
+                            Chỉnh sửa
+                        </button>) : (<div></div>)}
                 </div>
                 <div className="profile-info">
                     <h2>Thông tin cá nhân</h2>
                     <div className="info-item">
                         <img
                             className="avatar"
-                            src={user.avatartPath === undefined ? userIcon : baseUrlHttp + user.avatartPath}
+                            src={user.avatarPath === undefined ? userIcon : user.avatarPath}
                             alt="avatar">
                         </img>
                     </div>

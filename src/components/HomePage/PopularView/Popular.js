@@ -77,7 +77,7 @@ export default function Popular() {
                                     <div
                                         className="movie-title__wrap w-100 d-flex align-items-center justify-content-between text-white">
                                         <span className="movie-title">{item.videoName}</span>
-                                        <div className="movie-count-down">00:18:11</div>
+                                        <div className="movie-count-down">{item.viewCount} lượt xem</div>
                                     </div>
                                 </div>
                             </div>
