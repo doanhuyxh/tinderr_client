@@ -5,7 +5,9 @@ import * as signalR from '@microsoft/signalr';
 import {useRef, useState, useLayoutEffect} from "react";
 
 export default function GirlsPage() {
+
     let userSave = localStorage.getItem("userName");
+
     if(userSave === null || userSave === undefined){
         let _user = Math.random().toFixed(2)*100 + "_user";
         localStorage.setItem("userName", _user);
@@ -21,7 +23,7 @@ export default function GirlsPage() {
 
     useLayoutEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('http://server.tinderr.id.vn/chatHub')
+            .withUrl('https://localhost:44349/chatHub')
             .build();
         connection.start()
             .then(() => {
@@ -36,7 +38,9 @@ export default function GirlsPage() {
 
         connection.on("ReceiveMessageToUser", function (user, adminChat, message) {
             console.log("message", message, adminChat);
-            setMessages((prevListMes) => [...prevListMes, {user, message}]);
+            if(user === userClient) {
+                setMessages((prevListMes) => [...prevListMes, {user, message}]);
+            }
         })
 
         connection.on("ReceiveMessageToAdmin", function (user, adminChat, message) {
@@ -58,10 +62,11 @@ export default function GirlsPage() {
 
         connectionRef.current = connection;
 
-        console.log(messages)
+        console.log("messages: ",messages)
         return () => {
             // Clean up the connection when the component unmounts
             if (connection) {
+                setMessages([])
                 connection.stop();
             }
         };
