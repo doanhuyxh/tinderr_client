@@ -39,7 +39,7 @@ export default function MessagePage() {
 
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('http://server.tinderr.id.vn/chatHub')
+            .withUrl('https://localhost:44349/chatHub')
             .build();
         connection.start()
             .then(() => {
@@ -71,7 +71,7 @@ export default function MessagePage() {
             newMessages.push({
                 key:-1,
                 user: "supperadmin",
-                message: "Bạn là người có nhu cầu sinh lý cao ? Bạn muốn có 01 mối quan hệ không ràng buộc ? Bạn muốn kết nối với bạn tình gần khu vực bạn ? Chúng tôi có dịch vụ tại 63 tỉnh thành. Hãy để chúng tôi kết nối với các cô gái xinh đẹp tại nơi bạn sinh sống nhé !"
+                message: "Bạn là người có nhu cầu sinh lý cao? Bạn muốn có 01 mối quan hệ không ràng buộc ? Bạn muốn kết nối với bạn tình gần khu vực bạn ? Chúng tôi có dịch vụ tại 63 tỉnh thành. Hãy để chúng tôi kết nối với các cô gái xinh đẹp tại nơi bạn sinh sống nhé !"
             });
             newMessages.push({
                 key:-1,

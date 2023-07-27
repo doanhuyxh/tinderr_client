@@ -449,7 +449,7 @@
               display: flex;
               box-sizing: border-box;
               width: 100%;
-              padding: 10px 16px;
+              padding: 0 16px;
               overflow: hidden;
               color: #323233;
               background-color: #fff;
@@ -486,13 +486,17 @@
                     width: 100%;
                     min-width: 0;
                     margin: 0;
-                    padding: 0;
                     line-height: inherit;
                     text-align: left;
                     background-color: transparent;
-                    border: 0;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    padding-left: 10px;
                     resize: none;
-                    color: #ff253f;
+
+                    &:focus {
+                      outline: none;
+                    }
                   }
                 }
               }

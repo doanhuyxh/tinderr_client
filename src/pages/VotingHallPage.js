@@ -1,113 +1,139 @@
-import * as React from "react";
-import "./VotingHallPage.scss"
-import {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
+import React, { useEffect, useState, useMemo } from "react";
+import { Link } from "react-router-dom";
 import axios from "../Axios";
 import * as signalR from "@microsoft/signalr";
-import vote1 from "../images/vote1.jpg"
+import vote1 from "../images/vote1.jpg";
+import "./VotingHallPage.scss"
+
+const initialState = {
+    seconds: 60,
+    isShow: false,
+    history: [],
+    selectedNames: [],
+    number: 0,
+    numericValue: "",
+    total: 0,
+};
+
+const Rectangle = React.memo(({ name, rectangleClass, onClick }) => (
+    <div className="rectangle" onClick={() => onClick(name)}>
+        <div className={rectangleClass(name)}>
+            <div className="content">
+                <p className="name-text">{name}</p>
+                <p className="odd-text">1.90</p>
+            </div>
+        </div>
+    </div>
+));
 
 export default function VotingHallPage() {
-    const [seconds, setSeconds] = useState(60);
-    const [isShow, setIsShow] = useState(false);
-    const [history, setHistory] = useState([]);
-    const [selectedNames, setSelectedNames] = useState([]);
-    const [number, setNumber] = useState(0);
-    const [numericValue, setNumericValue] = useState(0);
-    const [total, setTotal] = useState(0);
-    const userData = localStorage.getItem('userData');
-    const user = userData ? JSON.parse(userData) : {};
+    const [state, setState] = useState(initialState);
+    const { seconds, isShow, history, selectedNames, numericValue, number, total } = state;
 
-    //sửa logic nếu chon xuân thì isXuan là 1 nếu là thu thì isThu là 3
-    //còn nêt ko chọn là 0 ok chua
+    const userData = localStorage.getItem("userData");
+    const user = userData ? JSON.parse(userData) : {};
 
     useEffect(() => {
         axios
             .get("api/MobileAPI/historyGame")
             .then((response) => {
-                setHistory(response.data.data);
+                setState((prevState) => ({ ...prevState, history: response.data.data }));
             })
             .catch((error) => {
                 console.log(error);
             });
+    }, []);
+
+    const formattedTime = useMemo(() => {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
     }, [seconds]);
 
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    const formattedTime = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-
-    function showHistory() {
-        setIsShow(!isShow);
-    }
+    const showHistory = () => {
+        setState((prevState) => ({ ...prevState, isShow: !prevState.isShow }));
+    };
 
     const handleRectangleClick = (name) => {
         const isSelected = selectedNames.includes(name);
 
         if (isSelected) {
-            setSelectedNames(selectedNames.filter((selectedName) => selectedName !== name));
-            setNumber(number - 1);
+            setState((prevState) => ({
+                ...prevState,
+                selectedNames: prevState.selectedNames.filter((selectedName) => selectedName !== name),
+                number: prevState.number - 1,
+            }));
         } else {
-            setSelectedNames([...selectedNames, name]);
-            setNumber(number + 1);
+            setState((prevState) => ({
+                ...prevState,
+                selectedNames: [...prevState.selectedNames, name],
+                number: prevState.number + 1,
+            }));
         }
     };
 
     const handleNumericChange = (event) => {
         const newValue = event.target.value;
-        setNumericValue(newValue);
+        setState((prevState) => ({ ...prevState, numericValue: newValue }));
         const newTotal = newValue * selectedNames.length;
-        setTotal(newTotal);
+        setState((prevState) => ({ ...prevState, total: newTotal }));
     };
 
     const rectangleClass = (name) => {
-        return `wrapper ${selectedNames.includes(name) ? 'selected-wrapper' : ''}`;
+        return `wrapper ${selectedNames.includes(name) ? "selected-wrapper" : ""}`;
     };
 
-    const selectedNamesText = selectedNames.join(", ");
+    const selectedNamesText = useMemo(() => selectedNames.join(", "), [selectedNames]);
 
-    let classNames = `popup ${isShow ? 'showModal' : ''}`;
+    let classNames = `popup ${isShow ? "showModal" : ""}`;
 
     useEffect(() => {
         // Calculate the new total based on the numeric value and the number of selected rectangles
         const newTotal = numericValue * selectedNames.length;
         // Update the total state with the new calculated value
-        setTotal(newTotal);
+        setState((prevState) => ({ ...prevState, total: newTotal }));
     }, [selectedNames, numericValue]);
 
     useEffect(() => {
         if (seconds === 0) {
             console.log("Countdown reached 0. Resetting...");
-            setSelectedNames([]);
-            setNumber(0);
-            setNumericValue(0);
-            setTotal(0);
+            setState(initialState);
         }
     }, [seconds]);
 
     useEffect(() => {
-        const connection = new signalR.HubConnectionBuilder()
-            .withUrl('http://server.tinderr.id.vn/gameHub')
-            .build();
+        const connection = new signalR.HubConnectionBuilder().withUrl("https://localhost:44349/gameHub").build();
 
-        connection.start()
+        connection
+            .start()
             .then(() => {
-                console.log('SignalR connected');
+                console.log("SignalR connected");
             })
-            .catch(error => {
-                console.log('Error while connecting to SignalR:', error);
+            .catch((error) => {
+                console.log("Error while connecting to SignalR:", error);
             });
 
         connection.on("UpdateCountDown", function (count) {
-            setSeconds(count);
+            setState((prevState) => ({ ...prevState, seconds: count }));
         });
 
         connection.on("CountDownFinishClient", function (item1, item2) {
             console.log("item 1: ", item1);
             console.log("item 2: ", item2);
-
             console.log("enteredNumericValue:", numericValue);
-        });
+            console.log("Selected names:", selectedNames);
 
-    }, [selectedNames, numericValue]);
+        });
+    }, [numericValue, selectedNames]);
+
+    // useEffect(() => {
+    //     console.log("Selected names:", selectedNames);
+    // }, [selectedNames]);
+    //
+    // // Add this logging statement to output the numericValue
+    // useEffect(() => {
+    //     console.log("Numeric value:", numericValue);
+    // }, [numericValue]);
 
     return (<>
         <div className="convention-hall">
@@ -123,7 +149,7 @@ export default function VotingHallPage() {
                     <div className="cover">
                         <img className="image__img"
                              src={vote1}
-                             alt=""></img>h
+                             alt=""></img>
                     </div>
                     <span className="period-number">Phiên <b>{}</b></span>
                     <div className="next-number"><span></span>
@@ -146,45 +172,37 @@ export default function VotingHallPage() {
                     <div className="game">
                         <div className="tips">
                             <p className="odds m-0">【Bình chọn 1】</p>
-                            <Link to="/history" className="play-tip">
-                                <i className="fa-solid fa-clock-rotate-left icon"></i>
-                                <span className="span-text">Lịch sử</span>
-                            </Link>
                         </div>
                         <div className="linear-gradient"></div>
                         <div className="sumValueTwoSides">
-                            <div className="rectangle" onClick={() => handleRectangleClick("Xuân")}>
-                                <div className={rectangleClass("Xuân")}>
-                                    <div className="content">
-                                        <p className="name-text">Xuân</p>
-                                        <p className="odd-text">1.90</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="rectangle" onClick={() => handleRectangleClick("Hạ")}>
-                                <div className={rectangleClass("Hạ")}>
-                                    <div className="content">
-                                        <p className="name-text">Hạ</p>
-                                        <p className="odd-text">1.90</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="rectangle" onClick={() => handleRectangleClick("Thu")}>
-                                <div className={rectangleClass("Thu")}>
-                                    <div className="content">
-                                        <p className="name-text">Thu</p>
-                                        <p className="odd-text">1.90</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="rectangle" onClick={() => handleRectangleClick("Đông")}>
-                                <div className={rectangleClass("Đông")}>
-                                    <div className="content">
-                                        <p className="name-text">Đông</p>
-                                        <p className="odd-text">1.90</p>
-                                    </div>
-                                </div>
-                            </div>
+                            <Rectangle name="Xuân" rectangleClass={rectangleClass} onClick={handleRectangleClick} />
+                            <Rectangle name="Hạ" rectangleClass={rectangleClass} onClick={handleRectangleClick} />
+                            <Rectangle name="Thu" rectangleClass={rectangleClass} onClick={handleRectangleClick} />
+                            <Rectangle name="Đông" rectangleClass={rectangleClass} onClick={handleRectangleClick} />
+                            {/*<div className="rectangle" onClick={() => handleRectangleClick("Hạ")}>*/}
+                            {/*    <div className={rectangleClass("Hạ")}>*/}
+                            {/*        <div className="content">*/}
+                            {/*            <p className="name-text">Hạ</p>*/}
+                            {/*            <p className="odd-text">1.90</p>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            {/*<div className="rectangle" onClick={() => handleRectangleClick("Thu")}>*/}
+                            {/*    <div className={rectangleClass("Thu")}>*/}
+                            {/*        <div className="content">*/}
+                            {/*            <p className="name-text">Thu</p>*/}
+                            {/*            <p className="odd-text">1.90</p>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
+                            {/*<div className="rectangle" onClick={() => handleRectangleClick("Đông")}>*/}
+                            {/*    <div className={rectangleClass("Đông")}>*/}
+                            {/*        <div className="content">*/}
+                            {/*            <p className="name-text">Đông</p>*/}
+                            {/*            <p className="odd-text">1.90</p>*/}
+                            {/*        </div>*/}
+                            {/*    </div>*/}
+                            {/*</div>*/}
                         </div>
                     </div>
                 </div>
@@ -199,7 +217,7 @@ export default function VotingHallPage() {
                         </div>
                         <div className="mid">
                             <span className="text">Số điểm</span>
-                            <span className="text num">{user.balance}</span>
+                            <span className="text num">{user.balance || 0}</span>
                         </div>
                         <div className="right">Bình chọn</div>
                     </div>
