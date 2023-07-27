@@ -14,8 +14,7 @@ import HistoryPage from "./pages/HistoryPage";
 
 function App() {
 
-    return (
-        <>
+    return (<>
             <div id="preloader">
                 <div id="preloader-inner"></div>
             </div>
@@ -32,13 +31,12 @@ function App() {
                     <Route path="/history" element={<HistoryPage/>}/>
                     <Route path="/message" element={<MessagePage/>}/>
                     <Route path="/chat" element={<ChatPage/>}/>
-                    <Route path="/watch/:itemId" element={<WatchPage />} />
+                    <Route path="/watch/:itemId" element={<WatchPage/>}/>
                 </Routes>
             </div>
 
             <Footer/>
-        </>
-    )
+        </>)
 }
 
 export default App;

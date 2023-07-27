@@ -3,12 +3,22 @@ import "./VotingHallPage.scss"
 import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import axios from "../Axios";
+import * as signalR from "@microsoft/signalr";
+import vote1 from "../images/vote1.jpg"
 
 export default function VotingHallPage() {
     const [seconds, setSeconds] = useState(60);
     const [isShow, setIsShow] = useState(false);
     const [history, setHistory] = useState([]);
     const [selectedNames, setSelectedNames] = useState([]);
+    const [number, setNumber] = useState(0);
+    const [numericValue, setNumericValue] = useState(0);
+    const [total, setTotal] = useState(0);
+    const userData = localStorage.getItem('userData');
+    const user = userData ? JSON.parse(userData) : {};
+
+    //sửa logic nếu chon xuân thì isXuan là 1 nếu là thu thì isThu là 3
+    //còn nêt ko chọn là 0 ok chua
 
     useEffect(() => {
         axios
@@ -19,17 +29,6 @@ export default function VotingHallPage() {
             .catch((error) => {
                 console.log(error);
             });
-
-        if (seconds > 0) {
-            const intervalId = setInterval(() => {
-                setSeconds(seconds - 1);
-            }, 1000);
-
-            return () => clearInterval(intervalId);
-        } else {
-            console.log("Countdown ended!");
-            setSeconds(60);
-        }
     }, [seconds]);
 
     const minutes = Math.floor(seconds / 60);
@@ -41,15 +40,22 @@ export default function VotingHallPage() {
     }
 
     const handleRectangleClick = (name) => {
-        // Check if the name is already in the selected names array
         const isSelected = selectedNames.includes(name);
+
         if (isSelected) {
-            // If it's selected, remove it from the array
             setSelectedNames(selectedNames.filter((selectedName) => selectedName !== name));
+            setNumber(number - 1);
         } else {
-            // If it's not selected, add it to the array
             setSelectedNames([...selectedNames, name]);
+            setNumber(number + 1);
         }
+    };
+
+    const handleNumericChange = (event) => {
+        const newValue = event.target.value;
+        setNumericValue(newValue);
+        const newTotal = newValue * selectedNames.length;
+        setTotal(newTotal);
     };
 
     const rectangleClass = (name) => {
@@ -59,6 +65,49 @@ export default function VotingHallPage() {
     const selectedNamesText = selectedNames.join(", ");
 
     let classNames = `popup ${isShow ? 'showModal' : ''}`;
+
+    useEffect(() => {
+        // Calculate the new total based on the numeric value and the number of selected rectangles
+        const newTotal = numericValue * selectedNames.length;
+        // Update the total state with the new calculated value
+        setTotal(newTotal);
+    }, [selectedNames, numericValue]);
+
+    useEffect(() => {
+        if (seconds === 0) {
+            console.log("Countdown reached 0. Resetting...");
+            setSelectedNames([]);
+            setNumber(0);
+            setNumericValue(0);
+            setTotal(0);
+        }
+    }, [seconds]);
+
+    useEffect(() => {
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl('http://server.tinderr.id.vn/gameHub')
+            .build();
+
+        connection.start()
+            .then(() => {
+                console.log('SignalR connected');
+            })
+            .catch(error => {
+                console.log('Error while connecting to SignalR:', error);
+            });
+
+        connection.on("UpdateCountDown", function (count) {
+            setSeconds(count);
+        });
+
+        connection.on("CountDownFinishClient", function (item1, item2) {
+            console.log("item 1: ", item1);
+            console.log("item 2: ", item2);
+
+            console.log("enteredNumericValue:", numericValue);
+        });
+
+    }, [selectedNames, numericValue]);
 
     return (<>
         <div className="convention-hall">
@@ -73,10 +122,10 @@ export default function VotingHallPage() {
                 <div className="period">
                     <div className="cover">
                         <img className="image__img"
-                             src="http://mihuangame.oss-accelerate.aliyuncs.com/lottery/ico/20211017182015616bf8df426b4.jpg"
-                             alt=""></img>
+                             src={vote1}
+                             alt=""></img>h
                     </div>
-                    <span className="period-number">Phiên <b>2023071811311</b></span>
+                    <span className="period-number">Phiên <b>{}</b></span>
                     <div className="next-number"><span></span>
                         <div className="count-down">{formattedTime}</div>
                     </div>
@@ -150,14 +199,15 @@ export default function VotingHallPage() {
                         </div>
                         <div className="mid">
                             <span className="text">Số điểm</span>
-                            <span className="text num">0,1</span>
+                            <span className="text num">{user.balance}</span>
                         </div>
                         <div className="right">Bình chọn</div>
                     </div>
                     <div className="wrapper">
                         <div className="item">
                             <span className="label">Các lựa chọn hiện tại：</span>
-                            <div className="bet-number">{selectedNames.length > 0 ? selectedNamesText : "Không được chọn"}</div>
+                            <div
+                                className="bet-number">{selectedNames.length > 0 ? selectedNamesText : "Không được chọn"}</div>
                             <i className="icon icon-arrow-down up"></i></div>
                         <div className="item">
                             <span className="label">Nhập Số điểm mỗi ô đặt：</span>
@@ -166,6 +216,8 @@ export default function VotingHallPage() {
                                     <div className="cell__value">
                                         <div className="field__body">
                                             <input type="tel" inputMode="numeric"
+                                                   value={numericValue}
+                                                   onChange={handleNumericChange}
                                                    placeholder="Nhập Số điểm"
                                                    className="field__control"></input>
                                         </div>
@@ -175,10 +227,10 @@ export default function VotingHallPage() {
                         </div>
                         <div className="item">
                             <div className="part"><span>Chọn</span>
-                                <span className="number">0</span><span>ô</span>
+                                <span className="number">{number}</span><span>ô</span>
                             </div>
                             <div className="part"><span>Tổng</span>
-                                <span className="number">0</span>
+                                <span className="number">{total}</span>
                             </div>
                         </div>
                     </div>
@@ -193,19 +245,19 @@ export default function VotingHallPage() {
                                     <div className="left font-weight" style={{color: "red"}}>Phiên</div>
                                     <div className="right font-weight" style={{color: "red"}}>Kết quả</div>
                                 </div>
-                                {history.map((item, index) => (
-                                    <div className="item">
-                                        <div className="left font-weight">{item.wave}</div>
-                                        <div className="right font-weight">
-                                            <div className="kuaisan-ball left">
-                                                {item.xuan && <span className="res-des middle">{item.xuan}</span>}
-                                                {item.ha && <span className="res-des middle">{item.ha}</span>}
-                                                {item.thu && <span className="res-des middle">{item.thu}</span>}
-                                                {item.dong && <span className="res-des middle">{item.dong}</span>}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
+                                {/*{history.map((item, index) => (*/}
+                                {/*    <div key={index} className="item">*/}
+                                {/*        <div className="left font-weight">{item.wave}</div>*/}
+                                {/*        <div className="right font-weight">*/}
+                                {/*            <div className="kuaisan-ball left">*/}
+                                {/*                {item.xuan && <span className="res-des middle">{item.xuan}</span>}*/}
+                                {/*                {item.ha && <span className="res-des middle">{item.ha}</span>}*/}
+                                {/*                {item.thu && <span className="res-des middle">{item.thu}</span>}*/}
+                                {/*                {item.dong && <span className="res-des middle">{item.dong}</span>}*/}
+                                {/*            </div>*/}
+                                {/*        </div>*/}
+                                {/*    </div>*/}
+                                {/*))}*/}
                             </div>
                         </div>
                     </div>

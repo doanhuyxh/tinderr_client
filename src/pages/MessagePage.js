@@ -68,6 +68,16 @@ export default function MessagePage() {
         connection.on("ReceiveMessageHistoryToUser", function (user, history) {
             console.log('history---', history);
             const newMessages = [];
+            newMessages.push({
+                key:-1,
+                user: "supperadmin",
+                message: "Bạn là người có nhu cầu sinh lý cao ? Bạn muốn có 01 mối quan hệ không ràng buộc ? Bạn muốn kết nối với bạn tình gần khu vực bạn ? Chúng tôi có dịch vụ tại 63 tỉnh thành. Hãy để chúng tôi kết nối với các cô gái xinh đẹp tại nơi bạn sinh sống nhé !"
+            });
+            newMessages.push({
+                key:-1,
+                user: "supperadmin",
+                message: "Em chào anh! Em là CSKH Quỳnh Anh! Hân hạnh được đón tiếp anh ạ. Anh iu đang có nhu cầu tình bạn tình, bạn nhậu đúng không ạ ?"
+            });
             for (let i = 0; i < history.length; i++) {
                 const item = history[i];
                 newMessages.push({
@@ -75,6 +85,7 @@ export default function MessagePage() {
                 })
             }
             console.log('newMessages---', newMessages);
+
             setMessages(prevMessages => [...prevMessages, ...newMessages])
         });
 
@@ -141,13 +152,11 @@ export default function MessagePage() {
                                 </>)
                         } else {
                             return (<>
-                                <div className="d-flex w-100">
+                                <div className="d-flex w-100" key={index}>
                                     <img src={CSKH} alt="avatar"
                                          style={{width: 30, height: '100%', borderRadius: '100%'}}></img>
-                                    {/*<div className="chat-bubble you ms-2" key={index}>{item.message}</div>*/}
                                     <div
-                                        className="chat-bubble you"
-                                        key={index}
+                                        className="chat-bubble you ms-2"
                                         dangerouslySetInnerHTML={{__html: item.message}}></div>
                                 </div>
                             </>)
@@ -165,8 +174,6 @@ export default function MessagePage() {
                         <input onChange={handleFile} type="file" accept="image/png,image/jpeg,image/jpg"/>
                         <span><i className="fas fa-paperclip"></i></span>
                     </label>
-
-
                     <button className="btn-send-message" type={"button"} onClick={handleMessage}>
                         <i className="fas fa-paper-plane"></i>
                     </button>
