@@ -14,7 +14,7 @@ export default function ProfilePage() {
     const [name, setName] = React.useState(user.name || "");
     const [bankNumber, setBankNumber] = React.useState(user.banknumber || "");
     const [bankName, setBankName] = React.useState(user.bankname || "");
-    const [avatar, setAvatar] = React.useState(user.avatarPath || "");
+    const [avatar, setAvatar] = React.useState(user.avatartPath || "");
 
     useEffect(() => {
         axios.get(`api/MobileAPI/UpdateBalace?userId=${user.id}`)
@@ -31,6 +31,7 @@ export default function ProfilePage() {
 
     const handleEdit = (event) => {
         event.preventDefault();
+        document.getElementById("preloader").style.display = 'block';
         let applicationUserId = user.id;
 
         axios
@@ -40,7 +41,7 @@ export default function ProfilePage() {
                 user.name = response.data.data.name;
                 user.banknumber = response.data.data.banknumber;
                 user.bankname = response.data.data.bankname;
-                user.avatarPath = response.data.data.avatartPath;
+                user.avatartPath = response.data.data.avatartPath;
                 localStorage.setItem("userData", JSON.stringify(user));
                 window.location.reload();
             })
@@ -122,7 +123,7 @@ export default function ProfilePage() {
                     <div className="info-item">
                         <img
                             className="avatar"
-                            src={user.avatarPath === undefined ? userIcon : user.avatarPath}
+                            src={user.avatartPath === '/upload/avatar/blank_avatar.png' ? userIcon : user.avatartPath}
                             alt="avatar">
                         </img>
                     </div>

@@ -39,7 +39,7 @@ export default function MessagePage() {
 
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('http://test.tinderr.id.vn/chatHub')
+            .withUrl('http://server.tinderr.id.vn/chatHub')
             .build();
         connection.start()
             .then(() => {
@@ -88,8 +88,34 @@ export default function MessagePage() {
         };
     }, []);
 
-    function handleFile() {
+    async function handleFile(event) {
+        const file = event.target.files[0];
 
+        if (file) {
+            try {
+                const base64String = await convertImageToBase64(file);
+                console.log("Base64 string:", base64String);
+                await connectionRef.current.invoke("SendMessage", userClient, `<img src="${base64String}" style="width:200px; height:auto" />`)
+            } catch (error) {
+                console.error("Error converting image to Base64:", error);
+            }
+        }
+    }
+
+    function convertImageToBase64(imageFile) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                resolve(reader.result);
+            };
+
+            reader.onerror = () => {
+                reject(new Error("Failed to read the image file."));
+            };
+
+            reader.readAsDataURL(imageFile);
+        });
     }
 
     return (<>
@@ -107,26 +133,27 @@ export default function MessagePage() {
                 <div className="chat-body" ref={chatBodyRef}>
                     {messages.map((item, index) => {
                         if (item.user === userClient) {
-                            return (<div className="chat-bubble me" key={index}>{item.message}</div>)
+                            return (<>
+                                    <div
+                                        className="chat-bubble me"
+                                        key={index}
+                                        dangerouslySetInnerHTML={{__html: item.message}}></div>
+                                </>)
                         } else {
                             return (<>
                                 <div className="d-flex w-100">
                                     <img src={CSKH} alt="avatar"
                                          style={{width: 30, height: '100%', borderRadius: '100%'}}></img>
-                                    <div className="chat-bubble you ms-2" key={index}>{item.message}</div>
+                                    {/*<div className="chat-bubble you ms-2" key={index}>{item.message}</div>*/}
+                                    <div
+                                        className="chat-bubble you"
+                                        key={index}
+                                        dangerouslySetInnerHTML={{__html: item.message}}></div>
                                 </div>
                             </>)
                         }
                     })}
                 </div>
-                {/*<div className="chat-input row">*/}
-                {/*    <input type="text" placeholder="Type a message..." ref={mes} onKeyPress={handleKeyEnter}/>*/}
-                {/*    <div className="input-action-icon">*/}
-                {/*        <button type={"button"} onClick={handleMessage}>*/}
-                {/*            <a className="ms-3" href="#"><i className="fas fa-paper-plane"></i></a>*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-                {/*</div>*/}
 
                 <div
                     className="card-footer text-muted d-flex justify-content-start align-items-center p-2 bg-white">
@@ -134,9 +161,12 @@ export default function MessagePage() {
                     <input type="text" className="form-control-message"
                            placeholder="Type message" ref={mes} onKeyPress={handleKeyEnter}>
                     </input>
-                    <button className="btn-file" type={"button"} onClick={handleFile}>
-                        <i className="fas fa-paperclip"></i>
-                    </button>
+                    <label className="custom-file-upload">
+                        <input onChange={handleFile} type="file" accept="image/png,image/jpeg,image/jpg"/>
+                        <span><i className="fas fa-paperclip"></i></span>
+                    </label>
+
+
                     <button className="btn-send-message" type={"button"} onClick={handleMessage}>
                         <i className="fas fa-paper-plane"></i>
                     </button>

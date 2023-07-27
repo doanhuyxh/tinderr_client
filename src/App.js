@@ -16,6 +16,10 @@ function App() {
 
     return (
         <>
+            <div id="preloader">
+                <div id="preloader-inner"></div>
+            </div>
+
             <div>
                 <Routes>
                     <Route path="/" element={<HomePage/>}/>

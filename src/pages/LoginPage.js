@@ -67,7 +67,7 @@ export default function LoginPage() {
                                     <span className="button-text">Đăng nhập</span>
                                 </div>
                             </button>
-                            <p className="text-end mt-3"><span>Bạn chưa có tài khoản, </span><Link to="/register"><span>Đăng ký ngay</span></Link></p>
+                            <p className="text-center mt-3"><span>Bạn chưa có tài khoản, </span><Link to="/register"><span>Đăng ký ngay</span></Link></p>
                         </form>
                     </div>
                 </div>
