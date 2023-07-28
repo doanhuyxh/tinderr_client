@@ -1,25 +1,32 @@
-import * as React from 'react';
-import "./RegisterPage.scss";
-import {useNavigate} from "react-router-dom";
-import axios from "../Axios";
-import register_anh from '../images/register_anh.jpg'
-import auth_anh from '../images/auth-bg.png'
+import React, {useState, useEffect} from 'react';
+import './RegisterPage.scss';
+import {useNavigate} from 'react-router-dom';
+import axios from '../Axios';
+import register_anh from '../images/register_anh.jpg';
+import auth_anh from '../images/auth-bg.png';
+
+const SuccessPopup = ({message}) => {
+    return <div className="success-popup"><p>{message}</p></div>;
+};
+
+const ErrorPopup = ({message}) => {
+    return <div className="error-popup"><p>{message}</p></div>;
+};
 
 export default function RegisterPage() {
     const navigate = useNavigate();
-    const [username, setUsername] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [rePassword, setRePassword] = React.useState("");
-    const [inviteCode, setInviteCode] = React.useState("");
-    const [error, setError] = React.useState(null);
-    const [ip, setIp] = React.useState("");
-    const [showPopup, setShowPopup] = React.useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [rePassword, setRePassword] = useState('');
+    const [inviteCode, setInviteCode] = useState('');
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [ip, setIp] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetch('https://api.ipify.org/?format=json')
-            .then(response => {
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => setIp(data.ip))
             .catch(() => setIp('0.0.0.0'));
     }, []);
@@ -28,20 +35,23 @@ export default function RegisterPage() {
         event.preventDefault();
 
         if (password !== rePassword) {
-            setError("Passwords do not match.");
+            setError('Passwords do not match.');
             return;
         }
-        let passwordHash = password;
-        let userName = username;
+
+        const passwordHash = password;
+        const userName = username;
 
         axios
-            .post("api/MobileAPI/register", {userName, passwordHash, inviteCode, ip})
-            .then((response) => {
-                if (response.data.isSuccess) {
+            .post('api/MobileAPI/register', {userName, passwordHash, inviteCode, ip})
+            .then(({data}) => {
+                if (data.isSuccess) {
+                    setSuccessMessage('Đăng ký thành công!');
                     setShowPopup(true);
+                    console.log(showPopup)
                     setTimeout(() => {
-                        handleSuccessClose(); // Tự động đóng popup sau 3 giây
-                    }, 3000);
+                        handleSuccessClose();
+                    }, 3000)
                 } else {
                     setError('Đăng ký thất bại');
                 }
@@ -49,12 +59,11 @@ export default function RegisterPage() {
             .catch((error) => {
                 setError(error.message);
             });
-
     };
 
     const handleBack = () => {
         navigate('/login');
-    }
+    };
 
     const handleSuccessClose = () => {
         setShowPopup(false);
@@ -62,16 +71,9 @@ export default function RegisterPage() {
     };
 
     return (<>
-        {showPopup && (
-            <div className="success-popup">
-                <p>Đăng ký thành công!</p>
-            </div>
-        )}
-        {error && (
-            <div className="error-popup">
-                <p>{error}</p>
-            </div>
-        )}
+        {showPopup && <SuccessPopup message={successMessage}/>}
+        {error && <ErrorPopup message={error}/>}
+
         <div className="register-page">
             <img src={auth_anh} className="bg-img" alt=""></img>
             <div className="bg-wrapper">
@@ -97,7 +99,8 @@ export default function RegisterPage() {
                                 <div className="cell-value">
                                     <div className="field-body">
                                         <input type="text" required id="username" value={username}
-                                               onChange={e => setUsername(e.target.value)} placeholder="Tên đăng nhập"
+                                               onChange={e => setUsername(e.target.value)}
+                                               placeholder="Tên đăng nhập"
                                                className="field-control"/>
                                     </div>
                                 </div>
@@ -125,7 +128,8 @@ export default function RegisterPage() {
                                 <div className="cell-value">
                                     <div className="field-body">
                                         <input type="text" required id="invite-code" value={inviteCode}
-                                               onChange={e => setInviteCode(e.target.value)} placeholder="Mã giới thiệu"
+                                               onChange={e => setInviteCode(e.target.value)}
+                                               placeholder="Mã giới thiệu"
                                                className="field-control"/>
                                     </div>
                                 </div>

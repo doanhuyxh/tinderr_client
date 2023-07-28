@@ -92,45 +92,37 @@ export default function VideoPage() {
                 </h3>
             </div>
 
-            <div className="content">
-                <div className="container">
-                    <div className="video-loop">
-                        <div className="row no-gutters">
-                            {showAllVideos ? dataVideo.map((item, index) => ( /* Render tất cả video */
-                                <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-3"
-                                     onClick={() => handleClick(item.id)}>
-                                    <div className="video-block thumbs-rotation">
-                                        <div className="thumb">
-                                            <img alt="Ảnh sex" className="video-img img-fluid loaded"
-                                                 src={baseUrlHttp + item.imgAvatarPath}>
-                                            </img>
-                                        </div>
-                                        <div className="infos" title="Được crush đang say rượu rủ về nhà tâm sự">
-                                            <span className="title1">{item.videoName}</span>
-                                        </div>
-                                        <div className="video-datas">
-                                            <span className="views-number">{item.viewCount} lượt xem </span>
-                                        </div>
+            <div className="hot-recommend-div">
+                <div role="feed" className="list">
+                    <div className="list-item">
+                        {showAllVideos ? dataVideo.map((item, index) => (
+                            <div key={index} className="movie-list-item" onClick={() => handleClick(item.id)}>
+                                <div className="cover_img">
+                                    <img src={baseUrlHttp + item.imgAvatarPath}
+                                         className="image__img" alt=""/>
+                                </div>
+                                <div className="movie-list-item-bottom">
+                                    <div className="movie-time-div">
+                                        <span
+                                            className="movie-time-div-title">{item.videoName}</span>
+                                        <span className="movie-time-view">Xem: {item.viewCount}</span></div>
+                                </div>
+                            </div>)) : (selectedCategoryVideos.map((item, index) => (
+                                <div key={index} className="movie-list-item" onClick={() => handleClick(item.id)}>
+                                    <div className="cover_img  ">
+                                        <img src={baseUrlHttp + item.imgAvatarPath}
+                                             className="image__img" alt=""/>
                                     </div>
-                                </div>)) : selectedCategoryVideos.map((item, index) => ( /* Render danh sách video tương ứng với category đã chọn */
-                                <div key={index} className="col-6 col-md-4 col-lg-3 col-xl-3"
-                                     onClick={() => handleClick(item.id)}>
-                                    <div className="video-block thumbs-rotation">
-                                        <div className="thumb">
-                                            <img alt="Ảnh sex" className="video-img img-fluid loaded"
-                                                 src={baseUrlHttp + item.imgAvatarPath}>
-                                            </img>
-                                        </div>
-                                        <div className="infos" title="Được crush đang say rượu rủ về nhà tâm sự">
-                                            <span className="title1">{item.videoName}</span>
-                                        </div>
-                                        <div className="video-datas">
-                                            <span className="views-number">{item.viewCount} lượt xem</span>
-                                        </div>
+                                    <div className="movie-list-item-bottom">
+                                        <div className="movie-time-div">
+                                            <span
+                                                className="movie-time-div-title">{item.videoName}</span>
+                                            <span className="movie-time-view">Xem: {item.viewCount}</span></div>
                                     </div>
-                                </div>))}
-                        </div>
+                                </div>))
+                        )}
                     </div>
+                    <div className="van-list__placeholder"></div>
                 </div>
             </div>
         </div>

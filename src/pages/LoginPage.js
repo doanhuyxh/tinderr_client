@@ -9,16 +9,18 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [successMessage, setSuccessMessage] = React.useState("");
     const [error, setError] = React.useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         axios
-            .post("api/MobileAPI/login", {username, password})
+            .post("api/MobileAPI/login", { username, password })
             .then((response) => {
                 if (response.data.isSuccess) {
                     localStorage.setItem('userData', JSON.stringify(response.data.data));
+                    setSuccessMessage("Đăng nhập thành công!");
                     navigate(`/`);
                 } else {
                     setError(response.data.message || 'Unknown error');
@@ -29,7 +31,20 @@ export default function LoginPage() {
             });
     };
 
+
     return (<>
+        {successMessage && (
+            <div className="success-popup">
+                <p>{successMessage}</p>
+            </div>
+        )}
+
+        {error && (
+            <div className="error-popup">
+                <p>{error}</p>
+            </div>
+        )}
+
         <div className="login-page">
             <img src={auth_anh} className="bg-img" alt=""></img>
             <div className="bg-wrapper">

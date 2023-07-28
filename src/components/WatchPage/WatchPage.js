@@ -82,7 +82,6 @@ export default function WatchPage() {
         document.body.style.overflow = "auto";
     }
 
-
     return (<>
         {showModal && <div className={`modal d-flex align-items-center ${showModal ? "fade-in" : ""}`}
                            tabIndex="-1">

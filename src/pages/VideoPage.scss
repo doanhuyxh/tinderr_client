@@ -142,218 +142,112 @@
     }
   }
 
-  .content {
-    font-weight: 400;
-    text-align: left;
-    font-size: 12px;
-    line-height: 1.5;
-    color: #000;
+  .hot-recommend-div {
+    list-style: none;
+    user-select: none;
     box-sizing: border-box;
-    padding: 0;
+    height: 100%;
+    margin: 10px auto;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
 
-    .container {
-      font-weight: 400;
-      text-align: left;
-      font-size: 12px;
-      line-height: 1.5;
-      color: #000;
+    .list {
+      list-style: none;
+      user-select: none;
       box-sizing: border-box;
-      width: 100%;
-      padding-right: 15px;
-      padding-left: 15px;
-      margin-right: auto;
-      margin-left: auto;
-      max-width: 100%;
+      padding-bottom: 100px;
 
-      .video-loop {
-        font-weight: 400;
-        text-align: left;
-        font-size: 12px;
-        line-height: 1.5;
-        color: #000;
+      .list-item {
+        list-style: none;
         box-sizing: border-box;
-        overflow: hidden;
-        margin: 0.25rem -0.25rem;
-        padding: 1px;
+        padding: 5px;
+        width: 100vw;
+        max-width: 600px;
 
-        .no-gutters {
-          font-weight: 400;
-          text-align: left;
-          font-size: 12px;
-          line-height: 1.5;
-          color: #000;
+        .movie-list-item {
+          list-style: none;
           box-sizing: border-box;
-          display: flex;
-          flex-wrap: wrap;
-          margin-right: 0;
-          margin-left: 0;
+          margin-bottom: 10px;
+          float: left;
+          width: calc(50% - 5px);
+          padding: 0 5px;
+          position: relative;
+          cursor: pointer;
 
-          .video-block {
-            font-weight: 400;
-            text-align: left;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #000;
+          .cover_img {
+            list-style: none;
             box-sizing: border-box;
-            margin: 0.25rem 0.25rem 1.15rem;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 10px;
+            position: relative;
+            width: 100%;
+            padding-bottom: 85%;
 
-            .thumb {
-              font-weight: 400;
-              text-align: left;
-              font-family: Arial,sans-serif;
-              font-size: 12px;
-              line-height: 1.5;
+            .image__img {
+              list-style: none;
+              user-select: none;
               box-sizing: border-box;
-              text-decoration: none;
-              transition: all .1s ease-in-out;
-              outline: 0;
-              color: #de2600;
               display: block;
-              margin: 1%;
-              position: relative;
-              overflow: hidden;
-              height: 0;
-              padding-bottom: 56.25%;
-              background-color: #ccc;
-
-              .video-debounce-bar {
-                font-weight: 400;
-                text-align: left;
-                font-family: Arial,sans-serif;
-                font-size: 12px;
-                line-height: 1.5;
-                color: #de2600;
-                box-sizing: border-box;
-                position: absolute;
-                z-index: 200;
-                top: 0;
-                left: 0;
-                height: 3px;
-                width: 0;
-                background-color: #de2600;
-              }
-
-              .lds-dual-ring {
-                font-weight: 400;
-                text-align: left;
-                font-family: Arial,sans-serif;
-                font-size: 12px;
-                line-height: 1.5;
-                color: #de2600;
-                box-sizing: border-box;
-                position: absolute;
-                z-index: 0;
-                display: inline-block;
-                width: 50px;
-                height: 50px;
-                top: 50%;
-                left: 50%;
-                transform: translate( -50%, -50% );
-              }
-
-              .video-img {
-                font-weight: 400;
-                text-align: left;
-                font-family: Arial,sans-serif;
-                font-size: 12px;
-                line-height: 1.5;
-                color: #de2600;
-                box-sizing: border-box;
-                vertical-align: middle;
-                max-width: 100%;
-                height: auto;
-                display: block;
-                position: absolute;
-                z-index: 50;
-                border: 0;
-                min-height: 1px;
-                min-width: 100%;
-                transition: opacity .3s ease-in-out;
-                opacity: 1;
-              }
-
-              .video-preview {
-                font-weight: 400;
-                text-align: left;
-                font-family: Arial,sans-serif;
-                font-size: 12px;
-                line-height: 1.5;
-                color: #de2600;
-                box-sizing: border-box;
-                position: absolute;
-                z-index: 10;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 100%;
-              }
+              border-radius: inherit;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
             }
+          }
 
-            .infos {
-              font-weight: 400;
-              text-align: left;
-              font-family: Arial,sans-serif;
-              font-size: 12px;
-              line-height: 1.5;
+          .movie-list-item-bottom {
+            list-style: none;
+            user-select: none;
+            box-sizing: border-box;
+            position: absolute;
+            width: calc(100% - 10px);
+            bottom: 6px;
+
+            .movie-time-div {
+              list-style: none;
+              user-select: none;
               box-sizing: border-box;
-              text-decoration: none;
-              background-color: transparent;
-              transition: all .1s ease-in-out;
-              outline: 0;
-              color: #de2600;
-              display: block;
-              margin: 4px 1% 1%;
+              color: #fff;
+              border-radius: 0 0 10px 10px;
+              height: 35px;
+              font-size: 14px;
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              background-color: rgba(0, 0, 0, .4);
 
-              .title1 {
+              .movie-time-div-title {
+                list-style: none;
+                user-select: none;
+                color: #fff;
                 box-sizing: border-box;
-                font-size: 15px;
-                max-height: 40px;
-                line-height: 20px;
-                text-align: center;
-                display: block;
-                font-weight: 400;
+                padding-right: 3px;
                 overflow: hidden;
-                color: #000;
-              }
-            }
-
-            .video-datas {
-              font-weight: 400;
-              box-sizing: border-box;
-              padding: 2px 2px;
-              font-size: 12px;
-              color: #555;
-              height: 20px;
-              line-height: 20px;
-              display: block;
-              text-align: center;
-
-              .views-number {
-                font-weight: 400;
-                font-family: Arial,sans-serif;
-                color: #555;
-                line-height: 20px;
-                text-align: center;
-                box-sizing: border-box;
+                white-space: nowrap;
+                width: 60%;
+                padding-left: 3px;
                 font-size: 14px;
               }
 
-              .duration {
-                font-weight: 400;
-                font-family: Arial,sans-serif;
-                line-height: 20px;
-                text-align: center;
-                box-sizing: border-box;
-                background: #777;
-                padding: 2px 3px;
-                border-radius: 3px;
-                font-size: 12px;
+              .movie-time-view {
+                list-style: none;
+                user-select: none;
                 color: #fff;
-                white-space: nowrap;
+                font-size: 14px;
+                box-sizing: border-box;
+                padding-right: 3px;
               }
             }
           }
         }
+
       }
     }
   }

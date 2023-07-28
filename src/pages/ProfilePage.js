@@ -131,7 +131,7 @@ export default function ProfilePage() {
                         <strong>Họ và tên: </strong> {user.name || "N/A"}
                     </div>
                     <div className="info-item">
-                        <strong>Số dư: </strong> {user.balance || 0}
+                        <strong>Số dư: </strong> {Number(user.balance).toLocaleString() || 0}
                     </div>
                     <div className="info-item">
                         <strong>Số tài khoản: </strong> {user.banknumber || "N/A"}

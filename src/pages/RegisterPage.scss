@@ -230,26 +230,19 @@
   }
 }
 
-.success-popup {
+.success-popup,
+.error-popup {
   position: fixed;
-  top: 50%;
+  bottom: 20px;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%);
+  background-color: rgba(0, 128, 0, 0.8); /* Green for success or choose your color */
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 4px;
 }
 
 .error-popup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ff3333;
-  color: #fff;
-  padding: 20px;
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 0, 0, 0.8); /* Red for error or choose your color */
 }
 
