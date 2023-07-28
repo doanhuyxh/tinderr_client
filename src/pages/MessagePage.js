@@ -9,6 +9,7 @@ import CSKH from "../images/CSKH.jpg"
 export default function MessagePage() {
     let userSave = localStorage.getItem("userName");
     let userLogin = localStorage.getItem("userData");
+    const elementRef = useRef(null);
     let userClient;
     if (userLogin) {
         userSave = JSON.parse(userLogin).userName;
@@ -25,21 +26,38 @@ export default function MessagePage() {
     const connectionRef = useRef(null);
     const chatBodyRef = useRef(null);
     const mes = useRef(null);
+    const lastChatBubbleRef = useRef(null);
+
+    useEffect(() => {
+        const element = chatBodyRef.current;
+        if (lastChatBubbleRef.current) {
+            lastChatBubbleRef.current.scrollIntoView({ behavior: "smooth" });
+        } else {
+            // If there are no messages or the component just mounted, scroll to the bottom
+            element.scrollTop = element.scrollHeight;
+        }
+    }, [messages]);
 
     const handleMessage = async () => {
-        await connectionRef.current.invoke("SendMessage", userClient, mes.current.value)
-        mes.current.value = "";
+        const messageContent = mes.current.value.trim(); // Trim the input value to remove whitespace
+
+        if (messageContent !== "") { // Check if the input value is not empty (after trimming whitespace)
+            await connectionRef.current.invoke("SendMessage", userClient, messageContent);
+            mes.current.value = "";
+        }
     }
 
     const handleKeyEnter = (event) => {
         if (event.key === 'Enter') {
+            const element = chatBodyRef.current;
+            element.scrollTop = element.scrollHeight;
             handleMessage()
         }
     }
 
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('http://test.tinderr.id.vn/chatHub')
+            .withUrl('http://server.tinderr.id.vn/chatHub')
             .build();
         connection.start()
             .then(() => {
@@ -56,12 +74,16 @@ export default function MessagePage() {
             console.log("message", message, adminChat);
             if (userClient == user) {
                 setMessages((prevListMes) => [...prevListMes, {user, message}]);
+                const element = chatBodyRef.current;
+                element.scrollTop = element.scrollHeight;
             }
         })
 
         connection.on("ReceiveMessageToAdmin", function (user, adminChat, message) {
             if (userClient == user) {
                 setMessages((prevListMes) => [...prevListMes, {adminChat, message}]);
+                const element = chatBodyRef.current;
+                element.scrollTop = element.scrollHeight;
             }
         })
 
@@ -104,9 +126,11 @@ export default function MessagePage() {
 
         if (file) {
             try {
+                document.getElementById("preloader").style.display = 'block';
                 const base64String = await convertImageToBase64(file);
                 console.log("Base64 string:", base64String);
                 await connectionRef.current.invoke("SendMessage", userClient, `<img src="${base64String}" style="width:200px; height:auto" />`)
+                document.getElementById("preloader").style.display = 'none';
             } catch (error) {
                 console.error("Error converting image to Base64:", error);
             }
@@ -144,14 +168,14 @@ export default function MessagePage() {
                 <div className="chat-body" ref={chatBodyRef}>
                     {messages.map((item, index) => {
                         if (item.user === userClient) {
-                            return (<>
+                            return (
                                     <div
                                         className="chat-bubble me"
                                         key={index}
                                         dangerouslySetInnerHTML={{__html: item.message}}></div>
-                                </>)
+                                )
                         } else {
-                            return (<>
+                            return (
                                 <div className="d-flex w-100" key={index}>
                                     <img src={CSKH} alt="avatar"
                                          style={{width: 30, height: '100%', borderRadius: '100%'}}></img>
@@ -159,7 +183,7 @@ export default function MessagePage() {
                                         className="chat-bubble you ms-2"
                                         dangerouslySetInnerHTML={{__html: item.message}}></div>
                                 </div>
-                            </>)
+                            )
                         }
                     })}
                 </div>
@@ -180,5 +204,6 @@ export default function MessagePage() {
                 </div>
             </div>
         </div>
+        <div ref={lastChatBubbleRef} />
     </>);
 }
