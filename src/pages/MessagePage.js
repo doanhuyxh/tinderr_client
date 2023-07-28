@@ -39,7 +39,7 @@ export default function MessagePage() {
 
     useEffect(() => {
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl('https://localhost:44349/chatHub')
+            .withUrl('http://test.tinderr.id.vn/chatHub')
             .build();
         connection.start()
             .then(() => {

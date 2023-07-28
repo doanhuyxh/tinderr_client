@@ -1,6 +1,6 @@
-const baseUrlHttp = "http://localhost:44349/";
-const baseUrlHttps = "https://localhost:44349/";
-const baseUrlHttpApi = "http://localhost:44349/api/"
-const baseUrlHttpsApi = "https://localhost:44349/api/"
+const baseUrlHttp = "https://localhost:44349/";
+const baseUrlHttps = "https://test.tinderr.id.vn/";
+const baseUrlHttpApi = "http://test.tinderr.id.vn/api/"
+const baseUrlHttpsApi = "https://test.tinderr.id.vn/api/"
 
 export {baseUrlHttp, baseUrlHttps, baseUrlHttpApi, baseUrlHttpsApi};
