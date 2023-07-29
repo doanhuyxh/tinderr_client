@@ -12,6 +12,11 @@ export default function WatchPage() {
     const [data, setData] = React.useState([]);
     const [showModal, setShowModal] = React.useState(false);
     const [base64, setBase64] = useState(_base64)
+    const [currentVideo, setCurrentVideo] = useState({
+        name: "",
+        views: ""
+    });
+
     let userData = localStorage.getItem('userData');
     let user = userData ? JSON.parse(userData) : {};
     let flag = useRef(true);
@@ -25,6 +30,13 @@ export default function WatchPage() {
                 .then((response) => {
                     // lấy video
                     setData(response.data.data);
+                    const video = response.data.data.find((item) => item.id == itemId);
+                    if (video) {
+                        setCurrentVideo({
+                            name: video.videoName,
+                            views: `${video.viewCount} Lượt xem`,
+                        });
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -97,11 +109,11 @@ export default function WatchPage() {
         {showModal && <div className="overlay" onClick={closeModal}></div>}
 
         <div className="watch-page">
-            <div className="video bg-dark">
+            <div className="video">
                 <ReactPlayer
                     width='100%'
                     url={base64}
-                    config={{ file: { forceVideo: true } }}
+                    config={{file: {forceVideo: true}}}
                     playing={true}
                     controls={true}
                 />
@@ -109,36 +121,40 @@ export default function WatchPage() {
 
             <section className="related-movies">
                 <div id="dp_related_movies-2xx" className="wrap-slider">
-                    <div className="section-bar clearfix">
-                        <h3 className="section-title">
-                            <span>Phim Sex Đề Xuất</span>
-                        </h3>
-                    </div>
-                    <div className="dp_box">
-                        {data.filter(x => x.id != itemId).map((item, index) => (
-                            <div key={index} className="col-lg-3 col-md-3 col-sm-3 col-xs-6 thumb grid-item"
-                                 onClick={() => handleClick(item.id)}>
-                                <article className="dp-item">
-                                    <div className="dp-thumb" title={item.videoName}>
-                                        <figure>
-                                            <img
-                                                src={baseUrlHttp + item.imgAvatarPath}
-                                                loading="lazy"
-                                                className="lazy" alt=""
-                                                width="277"
-                                                height="152">
-                                            </img>
-                                        </figure>
+                    <div className="movie-content">
+                        <div className="movie-descript">
+                            <p>{currentVideo.name}</p>
+                            <span>{currentVideo.views}</span>
+                        </div>
+
+                        <div style={{background: "#f2f2f5", height: "100vh"}}>
+                            <div className="movie-body">
+                                <div className="movie-title">
+                                    <div>
+                                        <span>Đề xuất</span>
                                     </div>
-                                    <div className="dp-post-title-box">
-                                        <div className="dp-post-title">
-                                            <h2 className="entry-title">
-                                                <span>{item.videoName}</span>
-                                            </h2>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>))}
+                                </div>
+                                <div className="movie-list">
+                                    {data.filter(x => x.id != itemId).map((item, index) => (
+                                        <div key={index} className="movie-play-item"
+                                             onClick={() => handleClick(item.id)}>
+                                            <div className="movie-play-item-img">
+                                                <img
+                                                    src={baseUrlHttp + item.imgAvatarPath}
+                                                    loading="lazy"
+                                                    className="lazy"
+                                                    alt={baseUrlHttp + item.imgAvatarPath}
+                                                    width="277"
+                                                    height="152"/>
+                                            </div>
+                                            <div className="movie-play-item-content">
+                                                <p>{item.videoName}</p>
+                                                <span>{item.viewCount} Lượt xem</span>
+                                            </div>
+                                        </div>))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

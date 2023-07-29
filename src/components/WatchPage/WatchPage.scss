@@ -28,25 +28,6 @@
     position: sticky;
     top: 0;
     z-index: 9;
-
-    .loader {
-      border: 5px solid #f3f3f3;
-      border-radius: 50%;
-      border-top: 5px solid #3498db;
-      width: 50px;
-      height: 50px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: spin 2s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: translate(-50%, -50%) rotate(0deg); }
-      100% { transform: translate(-50%, -50%) rotate(360deg); }
-    }
-
   }
 
   .related-movies {
@@ -55,7 +36,6 @@
     line-height: 1.6;
     box-sizing: border-box;
     display: block;
-    background: #000;
     height: 100vh;
 
     .wrap-slider {
@@ -67,174 +47,205 @@
       overflow: hidden;
       margin: 0;
 
-      .section-bar {
-        color: #a5a5a5;
-        font-size: 14px;
-        line-height: 1.6;
+      .movie-content {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        font-size: 100%;
+        vertical-align: baseline;
         box-sizing: border-box;
-        position: relative;
-        margin: 25px 0 15px;
+        flex: 1;
+        overflow-y: auto;
 
-        .section-title {
+        .movie-descript {
+          margin: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
           box-sizing: border-box;
-          font-family: inherit;
-          color: inherit;
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 11px;
-          display: block;
-          margin: 13px 0 10px;
-          position: relative;
-          text-transform: uppercase;
-          border-top: 1px solid rgba(255,255,255,.08);
+          width: 100%;
+          height: 100px;
+          background-color: #fff;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: space-between;
+          padding: 15px;
+
+          p {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            vertical-align: baseline;
+            box-sizing: border-box;
+            font-size: 16px;
+            font-weight: 700;
+            color: #000;
+          }
 
           span {
-            font-family: inherit;
-            line-height: 11px;
-            text-transform: uppercase;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            vertical-align: baseline;
             box-sizing: border-box;
-            font-weight: normal;
-            float: left;
-            margin-top: -15px;
-            border: 1px solid rgba(255,255,255,.08);
-            background: rgb(10, 10, 10);
-            font-size: 13px;
-            padding: 10px 15px 7px;
-            color: #fff;
-            position: relative;
+            color: #979799;
+            font-size: 14.5px;
           }
         }
-      }
 
-      .dp_box {
-        color: #a5a5a5;
-        font-size: 14px;
-        line-height: 1.6;
-        box-sizing: border-box;
-        list-style: none;
-        padding: 0;
-        margin: 10px -4px 20px;
-        display: block;
-
-        .grid-item {
-          color: #a5a5a5;
-          font-size: 14px;
-          line-height: 1.6;
-          list-style: none;
+        .movie-body {
+          padding: 0;
+          border: 0;
+          outline: 0;
+          font-size: 100%;
+          vertical-align: baseline;
           box-sizing: border-box;
-          min-height: 1px;
-          float: left;
-          width: 50%;
-          position: relative;
-          padding: 10px;
-          margin-bottom: 20px;
-          cursor: pointer;
+          width: calc(100% - 20px);
+          margin: 0 auto;
 
-          .dp-item {
-            color: #a5a5a5;
-            font-size: 14px;
-            list-style: none;
+          .movie-title {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            vertical-align: baseline;
             box-sizing: border-box;
-            display: block;
-            position: relative;
-            line-height: 0;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            .dp-thumb {
-              list-style: none;
-              line-height: 0;
+            div {
+              margin: 0;
+              padding: 0;
+              border: 0;
+              outline: 0;
+              font-size: 100%;
+              vertical-align: baseline;
               box-sizing: border-box;
-              background-color: transparent;
-              text-decoration: none;
-              color: #dbdbdb;
-              font-size: 13px;
-              position: relative;
-              display: inline-block;
-              transition: all .7s ease;
-              width: 100%;
+              width: 200px;
 
-              .lazy {
-                list-style: none;
-                line-height: 0;
-                color: #dbdbdb;
-                font-size: 13px;
-                font-family: 'arial', sans-serif;
-                aspect-ratio: auto 277 / 152;
-                box-sizing: border-box;
+              span {
+                margin: 0;
+                padding: 0;
                 border: 0;
-                max-width: 100%;
-                height: auto;
-                vertical-align: middle;
-                width: 100%;
-                transition: all .3s ease-in-out;
-              }
-
-              .icon_overlay {
-                list-style: none;
-                line-height: 0;
-                color: #dbdbdb;
-                font-size: 13px;
-                font-family: 'arial', sans-serif;
+                outline: 0;
+                vertical-align: baseline;
                 box-sizing: border-box;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(to bottom right, rgba(0,0,0,0.5), rgba(0,0,0,0.8));
-                opacity: 0;
-                transition: opacity .5s ease-in-out;
-                position: relative;
-                display: inline-block;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                font-size: 15px;
+                font-weight: 700;
+                color: #000;
+
+                &:before {
+                  content: "";
+                  display: block;
+                  width: 5px;
+                  height: 22px;
+                  background-color: #8774d3;
+                  border-radius: 1px;
+                  margin-right: 5px;
+                }
               }
             }
+          }
 
-            .dp-post-title-box {
-              color: #a5a5a5;
-              font-size: 14px;
-              list-style: none;
-              box-sizing: border-box;
-              line-height: 18px;
+          .movie-list {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            outline: 0;
+            font-size: 100%;
+            vertical-align: baseline;
+            box-sizing: border-box;
+
+            .movie-play-item {
               padding: 0;
-              margin: 0;
+              border: 0;
+              outline: 0;
+              font-size: 100%;
+              vertical-align: baseline;
+              box-sizing: border-box;
               width: 100%;
-              height: 40px;
-              bottom: 0;
-              background: linear-gradient(to bottom,rgba(0,0,0,0) 0,rgba(6, 6, 6, 0) 30%,rgba(0,0,0,0) 100%);
+              border-radius: 10px;
+              position: relative;
+              display: flex;
+              background-color: #fff;
+              margin: 0 0 20px;
 
-              .dp-post-title {
-                color: #a5a5a5;
-                font-size: 14px;
-                list-style: none;
+              .movie-play-item-img {
+                margin: 0;
+                padding: 0;
+                border: 0;
+                outline: 0;
+                font-size: 100%;
+                vertical-align: baseline;
                 box-sizing: border-box;
-                position: absolute;
-                line-height: 18px;
-                margin: auto;
-                width: 100%;
-                text-align: center;
+                height: 100%;
+                position: relative;
+                width: 30%;
 
-                .entry-title {
-                  list-style: none;
-                  text-align: center;
+                img {
+                  margin: 0;
+                  padding: 0;
+                  border: 0;
+                  outline: 0;
+                  font-size: 100%;
                   box-sizing: border-box;
-                  font-family: inherit;
-                  color: inherit;
-                  line-height: 19px;
-                  height: 40px;
-                  overflow: hidden;
-                  font-size: 9px !important;
-                  font-weight: bold;
-                  margin: 0 4px;
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 10px 0 0 10px;
+                  aspect-ratio: 1;
+                  object-fit: cover;
+                }
+              }
 
-                  span {
-                    list-style: none;
-                    text-align: center;
-                    line-height: 19px;
-                    font-weight: bold;
-                    box-sizing: border-box;
-                    background-color: transparent;
-                    text-decoration: none;
-                    color: #dbdbdb;
-                    font-size: 13px;
-                  }
+              .movie-play-item-content {
+                margin: 0;
+                border: 0;
+                outline: 0;
+                font-size: 100%;
+                vertical-align: baseline;
+                box-sizing: border-box;
+                height: 100%;
+                flex: 1;
+                padding: 10px;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: space-between;
+
+                p {
+                  margin: 0;
+                  padding: 0;
+                  border: 0;
+                  outline: 0;
+                  vertical-align: baseline;
+                  box-sizing: border-box;
+                  height: 60px;
+                  font-size: 14px;
+                  line-height: 1.3;
+                  overflow: hidden;
+                  color: #000;
+                }
+
+                span {
+                  margin: 0;
+                  padding: 0;
+                  border: 0;
+                  outline: 0;
+                  vertical-align: baseline;
+                  box-sizing: border-box;
+                  color: #444;
+                  font-size: 13px;
                 }
               }
             }
