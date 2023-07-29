@@ -1,4 +1,4 @@
-import React, {useEffect, useLayoutEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import ReactPlayer from "react-player";
 import {useNavigate, useParams} from "react-router-dom";
 import "./WatchPage.scss"
@@ -23,6 +23,7 @@ export default function WatchPage() {
             axios
                 .get("api/MobileAPI/videoHome")
                 .then((response) => {
+                    // lấy video
                     setData(response.data.data);
                 })
                 .catch((error) => {
@@ -38,10 +39,12 @@ export default function WatchPage() {
 
             axios
                 .get(`api/MobileAPI/watchVideo?videoId=${itemId}&userId=${user.id}`)
-                .then((response) => {
-                    if (response.data.isSuccess) {
+                .then(({data}) => {
+                    if (data.isSuccess) {
+                        // đã nạp
                         navigate(`/watch/${itemId}`);
                     } else {
+                        // chưa nạp
                         setTimeout(() => {
                             setShowModal(true);
                             document.body.style.overflow = "hidden";
@@ -51,15 +54,6 @@ export default function WatchPage() {
                 .catch((error) => {
                     console.log(error);
                 });
-
-            axios.get(`api/MobileAPI/UpdateBalace?userId=${user.id}`)
-                .then(res => {
-                    if (res.data.isSuccess) {
-                        user.balance = res.data.data;
-                        localStorage.setItem("userData", JSON.stringify(user));
-                    }
-                })
-                .catch(error => console.log('Error:', error));
         }
 
         return () => {
@@ -72,7 +66,8 @@ export default function WatchPage() {
             navigate(`/watch/${itemId}`);
             window.location.reload();
         } else {
-            navigate('/login');
+            setShowModal(true)
+            // navigate('/login');
         }
     };
 
@@ -91,7 +86,7 @@ export default function WatchPage() {
                         <h5 className="modal-title">Thông báo</h5>
                     </div>
                     <div className="modal-body text-center">
-                        <p>Bạn đang không có đủ số dư, vui lòng liên hệ với admin để nạp tiền.</p>
+                        <p>Bạn chưa kích hoạt vip. Vui lòng liên hệ admin để kích hoạt.</p>
                     </div>
                     <div className="modal-footer w-100">
                         <button type="button" className="btn btn-primary w-100" onClick={closeModal}>OK</button>
@@ -119,7 +114,7 @@ export default function WatchPage() {
                             <div key={index} className="col-lg-3 col-md-3 col-sm-3 col-xs-6 thumb grid-item"
                                  onClick={() => handleClick(item.id)}>
                                 <article className="dp-item">
-                                    <div className="dp-thumb" title="Trú mưa trong khách sạn cùng sếp nữ dâm đãng">
+                                    <div className="dp-thumb" title={item.videoName}>
                                         <figure>
                                             <img
                                                 src={baseUrlHttp + item.imgAvatarPath}

@@ -15,7 +15,7 @@ export default function MessagePage() {
         userSave = JSON.parse(userLogin).userName;
     }
     if (userSave === null || userSave === undefined) {
-        let _user = "user_" + Math.random().toFixed(8) * 100;
+        let _user = "user_" + Math.random().toFixed(8) * 100000000;
         localStorage.setItem("userName", _user);
         fetch(`${baseUrlHttp}Chat/SaveOtherUser?name=${localStorage.getItem("userName")}`)
         userClient = localStorage.getItem("userName");
@@ -91,14 +91,14 @@ export default function MessagePage() {
             console.log('history---', history);
             const newMessages = [];
             newMessages.push({
-                key:-1,
+                key:-2,
                 user: "supperadmin",
-                message: "Bạn là người có nhu cầu sinh lý cao? Bạn muốn có 01 mối quan hệ không ràng buộc ? Bạn muốn kết nối với bạn tình gần khu vực bạn ? Chúng tôi có dịch vụ tại 63 tỉnh thành. Hãy để chúng tôi kết nối với các cô gái xinh đẹp tại nơi bạn sinh sống nhé !"
+                message: "Bạn là người có nhu cầu sinh lý cao? Bạn muốn có 01 mối quan hệ không ràng buộc? Bạn muốn kết nối với bạn tình gần khu vực bạn ? Chúng tôi có dịch vụ tại 63 tỉnh thành. Hãy để chúng tôi kết nối với các cô gái xinh đẹp tại nơi bạn sinh sống nhé!"
             });
             newMessages.push({
                 key:-1,
                 user: "supperadmin",
-                message: "Em chào anh! Em là CSKH Quỳnh Anh! Hân hạnh được đón tiếp anh ạ. Anh iu đang có nhu cầu tình bạn tình, bạn nhậu đúng không ạ ?"
+                message: "Em chào anh! Em là CSKH Quỳnh Anh! Hân hạnh được đón tiếp anh ạ. Anh iu đang có nhu cầu tình bạn tình, bạn nhậu đúng không ạ?"
             });
             for (let i = 0; i < history.length; i++) {
                 const item = history[i];

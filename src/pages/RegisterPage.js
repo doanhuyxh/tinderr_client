@@ -53,7 +53,7 @@ export default function RegisterPage() {
                         handleSuccessClose();
                     }, 3000)
                 } else {
-                    setError('Đăng ký thất bại');
+                    setError('Đăng ký không thành công');
                 }
             })
             .catch((error) => {

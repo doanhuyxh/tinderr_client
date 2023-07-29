@@ -296,7 +296,7 @@ export default function VotingHallPage() {
             </div>
         </div>}
 
-        {checkBalance() && <div className={`modal d-flex align-items-center ${showModal ? "fade-in" : ""}`}
+        {checkBalance() && <div className={`modal d-flex align-items-center ${checkBalance() ? "fade-in" : ""}`}
                                 tabIndex="-1">
             <div className="modal-dialog">
                 <div className="modal-content">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./LoginPage.scss"
 import {Link, useNavigate} from "react-router-dom";
 import axios from "../Axios";
@@ -9,41 +9,50 @@ export default function LoginPage() {
     const navigate = useNavigate();
     const [username, setUsername] = React.useState("");
     const [password, setPassword] = React.useState("");
-    const [successMessage, setSuccessMessage] = React.useState("");
+    const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
     const [error, setError] = React.useState(null);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        document.getElementById("preloader").style.display = "block";
 
-        axios
-            .post("api/MobileAPI/login", { username, password })
-            .then((response) => {
-                if (response.data.isSuccess) {
-                    localStorage.setItem('userData', JSON.stringify(response.data.data));
-                    setSuccessMessage("Đăng nhập thành công!");
-                    navigate(`/`);
-                } else {
-                    setError(response.data.message || 'Unknown error');
-                }
-            })
-            .catch((error) => {
-                setError(error.message);
-            });
+        try {
+            const response = await axios.post("api/MobileAPI/login", {username, password});
+
+            if (response.data.isSuccess) {
+                localStorage.setItem('userData', JSON.stringify(response.data.data));
+                setShowSuccessMessage("Đăng nhập thành công!");
+                navigate(`/`);
+            } else {
+                setError(response.data.message || 'Đăng nhập không thành công');
+            }
+        } catch (error) {
+            setError(error.message || 'Đăng nhập không thành công');
+        }
+
+        document.getElementById("preloader").style.display = "none";
     };
 
 
-    return (<>
-        {successMessage && (
-            <div className="success-popup">
-                <p>{successMessage}</p>
-            </div>
-        )}
+    // Effect để ẩn thông báo thành công sau 3 giây
+    useEffect(() => {
+        let timer;
+        if (showSuccessMessage) {
+            timer = setTimeout(() => {
+                setShowSuccessMessage(false);
+            }, 3000); // Ẩn thông báo thành công sau 3 giây
+        }
+        return () => clearTimeout(timer);
+    }, [showSuccessMessage]);
 
-        {error && (
-            <div className="error-popup">
-                <p>{error}</p>
-            </div>
-        )}
+    return (<>
+        {showSuccessMessage && (<div className="success-popup">
+            <p>{showSuccessMessage}</p>
+        </div>)}
+
+        {error && (<div className="error-popup">
+            <p>{error}</p>
+        </div>)}
 
         <div className="login-page">
             <img src={auth_anh} className="bg-img" alt=""></img>
@@ -82,7 +91,8 @@ export default function LoginPage() {
                                     <span className="button-text">Đăng nhập</span>
                                 </div>
                             </button>
-                            <p className="text-center mt-3"><span>Bạn chưa có tài khoản, </span><Link to="/register"><span>Đăng ký ngay</span></Link></p>
+                            <p className="text-center mt-3"><span>Bạn chưa có tài khoản, </span><Link
+                                to="/register"><span>Đăng ký ngay</span></Link></p>
                         </form>
                     </div>
                 </div>

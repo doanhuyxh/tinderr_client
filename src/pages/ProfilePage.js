@@ -19,7 +19,6 @@ export default function ProfilePage() {
     useEffect(() => {
         axios.get(`api/MobileAPI/UpdateBalace?userId=${user.id}`)
             .then(res => {
-                console.log(res)
                 if (res.data.isSuccess) {
                     user.balance = res.data.data;
                     localStorage.setItem("userData", JSON.stringify(user));
