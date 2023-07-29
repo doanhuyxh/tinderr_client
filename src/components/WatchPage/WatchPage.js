@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import ReactPlayer from "react-player";
+import ReactPlayer from "react-player/lazy";
 import {useNavigate, useParams} from "react-router-dom";
 import "./WatchPage.scss"
 import axios from "../../Axios";
@@ -98,7 +98,13 @@ export default function WatchPage() {
 
         <div className="watch-page">
             <div className="video bg-dark">
-                <ReactPlayer width='100%' url={base64} controls={true}/>
+                <ReactPlayer
+                    width='100%'
+                    url={base64}
+                    config={{ file: { forceVideo: true } }}
+                    playing={true}
+                    controls={true}
+                />
             </div>
 
             <section className="related-movies">
@@ -117,6 +123,7 @@ export default function WatchPage() {
                                         <figure>
                                             <img
                                                 src={baseUrlHttp + item.imgAvatarPath}
+                                                loading="lazy"
                                                 className="lazy" alt=""
                                                 width="277"
                                                 height="152">
