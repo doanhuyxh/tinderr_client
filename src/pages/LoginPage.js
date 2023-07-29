@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import "./LoginPage.scss"
 import {Link, useNavigate} from "react-router-dom";
 import axios from "../Axios";
@@ -7,52 +7,42 @@ import auth_anh from "../images/auth-bg.png";
 
 export default function LoginPage() {
     const navigate = useNavigate();
-    const [username, setUsername] = React.useState("");
-    const [password, setPassword] = React.useState("");
-    const [showSuccessMessage, setShowSuccessMessage] = React.useState(false);
-    const [error, setError] = React.useState(null);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = (event) => {
         event.preventDefault();
-        document.getElementById("preloader").style.display = "block";
-
-        try {
-            const response = await axios.post("api/MobileAPI/login", {username, password});
-
-            if (response.data.isSuccess) {
-                localStorage.setItem('userData', JSON.stringify(response.data.data));
-                setShowSuccessMessage("Đăng nhập thành công!");
-                navigate(`/`);
-            } else {
-                setError(response.data.message || 'Đăng nhập không thành công');
-            }
-        } catch (error) {
-            setError(error.message || 'Đăng nhập không thành công');
-        }
-
-        document.getElementById("preloader").style.display = "none";
+        document.getElementById("preloader").style.display = 'block';
+        axios
+            .post("api/MobileAPI/login", { username, password })
+            .then(({data} )=> {
+                setShowModal(true);
+                if (data.isSuccess) {
+                    localStorage.setItem('userData', JSON.stringify(data.data));
+                    navigate(`/`);
+                } else {
+                    setError('Đăng nhập không thành công');
+                }
+                setTimeout(() => setShowModal(false), 4000);
+            })
+            .catch((error) => {
+                setError(error.message);
+            });
+        document.getElementById("preloader").style.display = 'none';
     };
 
-
-    // Effect để ẩn thông báo thành công sau 3 giây
-    useEffect(() => {
-        let timer;
-        if (showSuccessMessage) {
-            timer = setTimeout(() => {
-                setShowSuccessMessage(false);
-            }, 3000); // Ẩn thông báo thành công sau 3 giây
-        }
-        return () => clearTimeout(timer);
-    }, [showSuccessMessage]);
+    const ErrorPopup = ({error}) => {
+        return <div className="error-popup"><p>{error}</p></div>;
+    };
 
     return (<>
-        {showSuccessMessage && (<div className="success-popup">
-            <p>{showSuccessMessage}</p>
-        </div>)}
-
-        {error && (<div className="error-popup">
-            <p>{error}</p>
-        </div>)}
+        {showModal && (
+            <>
+                {error && <ErrorPopup error={error}/>}
+            </>
+        )}
 
         <div className="login-page">
             <img src={auth_anh} className="bg-img" alt=""></img>

@@ -67,7 +67,6 @@ export default function WatchPage() {
             window.location.reload();
         } else {
             setShowModal(true)
-            // navigate('/login');
         }
     };
 

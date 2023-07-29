@@ -1,17 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import './RegisterPage.scss';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from '../Axios';
 import register_anh from '../images/register_anh.jpg';
 import auth_anh from '../images/auth-bg.png';
-
-const SuccessPopup = ({message}) => {
-    return <div className="success-popup"><p>{message}</p></div>;
-};
-
-const ErrorPopup = ({message}) => {
-    return <div className="error-popup"><p>{message}</p></div>;
-};
 
 export default function RegisterPage() {
     const navigate = useNavigate();
@@ -19,10 +11,9 @@ export default function RegisterPage() {
     const [password, setPassword] = useState('');
     const [rePassword, setRePassword] = useState('');
     const [inviteCode, setInviteCode] = useState('');
-    const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState('');
     const [ip, setIp] = useState('');
-    const [showPopup, setShowPopup] = useState(false);
+    const [message, setMessage] = useState(null);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         fetch('https://api.ipify.org/?format=json')
@@ -35,7 +26,9 @@ export default function RegisterPage() {
         event.preventDefault();
 
         if (password !== rePassword) {
-            setError('Passwords do not match.');
+            setShowModal(true);
+            setMessage('Mật khẩu nhập lại không khớp');
+            setTimeout(() => setShowModal(false), 4000);
             return;
         }
 
@@ -45,19 +38,22 @@ export default function RegisterPage() {
         axios
             .post('api/MobileAPI/register', {userName, passwordHash, inviteCode, ip})
             .then(({data}) => {
-                if (data.isSuccess) {
-                    setSuccessMessage('Đăng ký thành công!');
-                    setShowPopup(true);
-                    console.log(showPopup)
-                    setTimeout(() => {
-                        handleSuccessClose();
-                    }, 3000)
+                setShowModal(true);
+                if (data.isSuccess && data.message === "") {
+                    setMessage('Đăng ký thành công!');
+                    setUsername('');
+                    setPassword('');
+                    setRePassword('');
+                    setInviteCode('');
+                } else if (data.isSuccess && data.message === "Illegal InviteCode") {
+                    setMessage('Mã mời không hợp lệ, vui lòng liên hệ CSKH để được cấp mã mời.');
                 } else {
-                    setError('Đăng ký không thành công');
+                    setMessage('Tên đăng nhập đã tồn tại')
                 }
+                setTimeout(() => setShowModal(false), 4000);
             })
             .catch((error) => {
-                setError(error.message);
+                setMessage('Lỗi');
             });
     };
 
@@ -65,14 +61,25 @@ export default function RegisterPage() {
         navigate('/login');
     };
 
-    const handleSuccessClose = () => {
-        setShowPopup(false);
-        navigate('/login');
+    const SuccessPopup = ({message}) => {
+        return <div className="success-popup"><p>{message}</p></div>;
+    };
+
+    const ErrorPopup = ({message}) => {
+        return <div className="error-popup"><p>{message}</p></div>;
     };
 
     return (<>
-        {showPopup && <SuccessPopup message={successMessage}/>}
-        {error && <ErrorPopup message={error}/>}
+        {/* Modals */}
+        {showModal && (
+            <>
+                {message === 'Đăng ký thành công!' && (<SuccessPopup message={message}/>)}
+                {message === 'Mã mời không hợp lệ, vui lòng liên hệ CSKH để được cấp mã mời.' && (<ErrorPopup message={message}/>)}
+                {message === 'Tên đăng nhập đã tồn tại' && (<ErrorPopup message={message}/>)}
+                {message === 'Mật khẩu nhập lại không khớp' && <ErrorPopup message={message}/>}
+                {message === 'Lỗi' && <ErrorPopup message={message}/>}
+            </>
+        )}
 
         <div className="register-page">
             <img src={auth_anh} className="bg-img" alt=""></img>
@@ -99,8 +106,7 @@ export default function RegisterPage() {
                                 <div className="cell-value">
                                     <div className="field-body">
                                         <input type="text" required id="username" value={username}
-                                               onChange={e => setUsername(e.target.value)}
-                                               placeholder="Tên đăng nhập"
+                                               onChange={e => setUsername(e.target.value)} placeholder="Tên đăng nhập"
                                                className="field-control"/>
                                     </div>
                                 </div>
@@ -128,8 +134,7 @@ export default function RegisterPage() {
                                 <div className="cell-value">
                                     <div className="field-body">
                                         <input type="text" required id="invite-code" value={inviteCode}
-                                               onChange={e => setInviteCode(e.target.value)}
-                                               placeholder="Mã giới thiệu"
+                                               onChange={e => setInviteCode(e.target.value)} placeholder="Mã giới thiệu"
                                                className="field-control"/>
                                     </div>
                                 </div>

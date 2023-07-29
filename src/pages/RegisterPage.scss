@@ -239,10 +239,26 @@
   background-color: rgba(0, 128, 0, 0.8); /* Green for success or choose your color */
   color: #fff;
   padding: 10px 20px;
-  border-radius: 4px;
+  border-radius: 10px;
+  transition: opacity 0.3s ease-in-out; // Thêm hiệu ứng chuyển đổi
+  z-index: 9999; /* Show modal above other elements */
+  opacity: 1; /* Show modal */
+  width: auto; /* Set width */
+  text-align: center;
+  height: auto;
+  animation: fadeInOut 4s forwards;
+
+  p {
+    font-size: 20px;
+  }
 }
 
 .error-popup {
-  background-color: rgba(255, 0, 0, 0.8); /* Red for error or choose your color */
+  background-color: rgba(255, 0, 0, 0.8);
 }
 
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
