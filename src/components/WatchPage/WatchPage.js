@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import ReactPlayer from "react-player/lazy";
+import {Oval as Loader} from 'react-loader-spinner';
 import {useNavigate, useParams} from "react-router-dom";
 import "./WatchPage.scss"
 import axios from "../../Axios";
@@ -13,13 +14,18 @@ export default function WatchPage() {
     const [showModal, setShowModal] = React.useState(false);
     const [base64, setBase64] = useState(_base64)
     const [currentVideo, setCurrentVideo] = useState({
-        name: "",
-        views: ""
+        name: "", views: ""
     });
 
     let userData = localStorage.getItem('userData');
     let user = userData ? JSON.parse(userData) : {};
     let flag = useRef(true);
+
+    const [loading, setLoading] = useState(true);
+
+    const handleReady = () => {
+        setLoading(false);
+    };
 
     useEffect(() => {
         if (flag.current) {
@@ -33,8 +39,7 @@ export default function WatchPage() {
                     const video = response.data.data.find((item) => item.id == itemId);
                     if (video) {
                         setCurrentVideo({
-                            name: video.videoName,
-                            views: `${video.viewCount} Lượt xem`,
+                            name: video.videoName, views: `${video.viewCount} Lượt xem`,
                         });
                     }
                 })
@@ -110,13 +115,19 @@ export default function WatchPage() {
 
         <div className="watch-page">
             <div className="video">
-                <ReactPlayer
-                    width='100%'
-                    url={base64}
-                    config={{file: {forceVideo: true}}}
-                    playing={true}
-                    controls={true}
-                />
+                <div className="video-wrapper">
+                    {loading && (<div className="loader-container">
+                        <Loader type="Oval" color="#00BFFF" height={50} width={50}/>
+                    </div>)}
+                    <ReactPlayer
+                        width="100%"
+                        url={base64}
+                        config={{file: {forceVideo: true}}}
+                        playing={true}
+                        controls={true}
+                        onReady={handleReady}
+                    />
+                </div>
             </div>
 
             <section className="related-movies">
