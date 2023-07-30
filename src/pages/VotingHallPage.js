@@ -20,9 +20,7 @@ export default function VotingHallPage() {
     if (!user.userName) {
         setTimeout(() => {
             setShowModal(true);
-            document.body.style.overflow = "hidden";
         }, 200);
-        document.body.style.overflow = "auto";
     }
 
     function showHistory() {
@@ -228,45 +226,6 @@ export default function VotingHallPage() {
         const remainingSeconds = seconds % 60;
         return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
     }
-
-    // function handleVote() {
-    //     // Get the number of selected items
-    //     const selectedCount = XuanHaThuDong.filter(x => x > 0).length;
-    //
-    //     if (selectedCount === 0) {
-    //         // If no items are selected, show an error message or take any appropriate action.
-    //         alert("Bạn phải chọn ít nhất 1 lựa chọn để bình chọn!");
-    //         return;
-    //     }
-    //
-    //     if (totalPoint === 0) {
-    //         // If totalPoint is 0, show an error message or take any appropriate action.
-    //         alert("Bạn phải nhập số điểm để bình chọn!");
-    //         return;
-    //     }
-    //
-    //     // Calculate the result based on the selected items and totalPoint
-    //     const calculatedTotal = totalPoint * selectedCount;
-    //
-    //     console.log(calculatedTotal)
-    //     console.log(SetXuanHaThuDong)
-    //
-    //     // Update the state with the calculatedTotal and reset XuanHaThuDong and totalPoint
-    //     setTotalPont(0);
-    //     SetXuanHaThuDong([0, 0, 0, 0]);
-    //
-    //     // Optionally, you can send the voting data to the server using Axios or SignalR here.
-    //     // For example:
-    //     // axios.post("api/MobileAPI/submitVote", {
-    //     //   selectedItems: XuanHaThuDong.filter(x => x > 0),
-    //     //   totalPoint: calculatedTotal
-    //     // }).then((response) => {
-    //     //   // Handle the response from the server if needed.
-    //     // }).catch((error) => {
-    //     //   console.log(error);
-    //     // });
-    //
-    // }
 
     const closeModal = () => {
         setShowModal(false);
