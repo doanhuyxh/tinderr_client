@@ -459,7 +459,6 @@ export default function VotingHallPage() {
                         </div>
                     </div>
                 </div>
-                <div className="overlay"></div>
                 <div className={classNames}>
                     <div className="pull-refresh">
                         <div className="pull-refresh__track">
