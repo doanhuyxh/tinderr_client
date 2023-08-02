@@ -9,10 +9,10 @@ import {baseUrlHttp} from "../../Constant";
 export default function WatchPage() {
     const navigate = useNavigate();
     const {itemId} = useParams();
-    let _base64 = "data:video/mp4;base64,";
+    let _base64 = "http://server.tinderr.id.vn";
     const [data, setData] = React.useState([]);
     const [showModal, setShowModal] = React.useState(false);
-    const [base64, setBase64] = useState(_base64)
+    const [base64, setBase64] = useState("")
     const [currentVideo, setCurrentVideo] = useState({
         name: "", views: ""
     });
@@ -49,7 +49,7 @@ export default function WatchPage() {
 
             axios.get(`api/MobileAPI/id/${itemId}`)
                 .then(res => {
-                    const dataUrl = `data:video/mp4;base64,${res.data.data}`;
+                    const dataUrl = `${_base64}${res.data.data}`;
                     setBase64(dataUrl);
                 })
                 .catch(error => console.log('Error:', error));
@@ -123,7 +123,6 @@ export default function WatchPage() {
                         width="100%"
                         url={base64}
                         config={{file: {forceVideo: true}}}
-                        playing={true}
                         controls={true}
                         onReady={handleReady}
                     />
